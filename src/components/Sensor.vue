@@ -8,13 +8,12 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { useStore } from "@/store";
 import { StoreApi } from "@/store/api";
 
 export default defineComponent({
   components: {},
   props: {
-    id: String,
+    id: { type: String, required: true },
   },
   setup(props) {
     const storeApi = new StoreApi();

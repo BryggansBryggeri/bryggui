@@ -1,7 +1,7 @@
 <template>
   <div class="bg-red-200 container mx-auto mt-4">
     <h1 class="is-size-3 has-text-centered p-2 has-text-weight-bold">
-      This iteration: Vue 3/Vuex 4/ts/vite/Composition 
+      This iteration: Vue 3/Vuex 4/ts/vite/Composition
     </h1>
     <div v-if="loading">
       <h3 class="has-text-centered mt-4">
