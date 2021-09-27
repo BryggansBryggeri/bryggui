@@ -32,4 +32,5 @@ export type Store = Omit<VuexStore<State>, "commit" | "dispatch"> & {
     payload?: Parameters<Actions[K]>[1],
     options?: DispatchOptions
   ): ReturnType<Actions[K]>;
-} & {};
+// } & {}; Changed this for eslint reasons
+} & Record<string, never>;
