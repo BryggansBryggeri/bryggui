@@ -29,7 +29,7 @@ import { eventbus } from "@/eventbus";
 import Sensor from "@/components/Sensor.vue";
 
 export default defineComponent({
-  components: {Sensor},
+  components: { Sensor },
   setup() {
     eventbus.start();
     const store = useStore();

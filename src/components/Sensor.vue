@@ -14,7 +14,7 @@ import { eventbus } from "@/eventbus";
 export default defineComponent({
   components: {},
   props: {
-   id: String,
+    id: String,
   },
   setup(props) {
     const store = useStore();
