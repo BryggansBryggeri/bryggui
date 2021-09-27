@@ -32,5 +32,5 @@ export type Store = Omit<VuexStore<State>, "commit" | "dispatch"> & {
     payload?: Parameters<Actions[K]>[1],
     options?: DispatchOptions
   ): ReturnType<Actions[K]>;
-// eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types
 } & {};

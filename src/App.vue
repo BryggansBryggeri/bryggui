@@ -14,14 +14,14 @@
       <p class="has-text-centered mt-2">
         NatsClientStatus: {{ natsClientStatus }}
       </p>
+      <h3>Active sensors:</h3>
+      <li
+        v-for="sensorClient in activeSensors"
+        :key="sensorClient"
+      >
+        {{ sensorClient }}
+      </li>
     </div>
-    <h3>Active sensors:</h3>
-    <li
-      v-for="sensorClient in activeSensors"
-      :key="sensorClient"
-    >
-      {{ sensorClient }}
-    </li>
   </div>
 </template>
 
