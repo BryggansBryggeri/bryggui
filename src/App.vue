@@ -7,11 +7,13 @@
       <h3 class="has-text-centered mt-4">Loading...</h3>
     </div>
     <div v-else>
-      <p class="has-text-centered mt-2">Mash temp: {{ mashTemp }}</p>
-      <p class="has-text-centered mt-2">Boil temp: {{ boilTemp }}</p>
-      <p class="has-text-centered mt-2">NatsClientStatus: {{ natsClientStatus }}</p>
+      <sensor id="mash_temp"></sensor>
+      <sensor id="boil_temp"></sensor>
+      <p class="has-text-centered mt-2">
+        NatsClientStatus: {{ natsClientStatus }}
+      </p>
     </div>
-    Active sensors:
+    <h3>Active sensors:</h3>
     <li v-for="sensorClient in activeSensors" :key="sensorClient">
       {{ sensorClient }}
     </li>
@@ -24,9 +26,10 @@ import { useStore } from "@/store";
 import { ActionTypes } from "@/store/actions";
 import { StoreApi } from "@/store/api";
 import { eventbus } from "@/eventbus";
+import Sensor from "@/components/Sensor.vue";
 
 export default defineComponent({
-  components: {},
+  components: {Sensor},
   setup() {
     eventbus.start();
     const store = useStore();
@@ -36,10 +39,8 @@ export default defineComponent({
     onMounted(() => {
       storeApi.fauxLoading();
     });
-    const mashTemp = computed(() => storeApi.getSensorValue("mash_temp"));
-    const boilTemp = computed(() => storeApi.getSensorValue("boil_temp"));
     const activeSensors = computed(() => Array.from(storeApi.sensorClients()));
-    return { loading, mashTemp, boilTemp, natsClientStatus, activeSensors };
+    return { loading, natsClientStatus, activeSensors };
   },
 });
 </script>

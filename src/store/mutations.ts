@@ -11,7 +11,10 @@ export enum MutationType {
 
 export type Mutations = {
   [MutationType.SetLoading](state: State, value: boolean): void;
-  [MutationType.SetNatsClientStatus](state: State, status: NatsClientStatus): void;
+  [MutationType.SetNatsClientStatus](
+    state: State,
+    status: NatsClientStatus
+  ): void;
   [MutationType.UpdateSensor](state: State, meas: [string, MeasResult]): void;
 };
 
