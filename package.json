@@ -6,11 +6,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
     "format": "prettier --write '**/*.{js,ts,html,vue,json}'",
-<<<<<<< HEAD
-    "lint": "eslint --fix --ext .ts,.vue --ignore-path .gitignore ."
-=======
+    "lint": "eslint --fix --ext .ts,.vue --ignore-path .gitignore .",
     "prepare": "husky install"
->>>>>>> 286fd69085743c942d292ece300938f99348b428
   },
   "dependencies": {
     "@headlessui/vue": "^1.4.1",
@@ -33,12 +30,8 @@
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.3.1",
-<<<<<<< HEAD
     "eslint-plugin-vue": "^7.18.0",
-=======
-    "eslint-plugin-vue": "^7.0.0",
     "husky": "^7.0.2",
->>>>>>> 286fd69085743c942d292ece300938f99348b428
     "postcss": "^8.3.8",
     "prettier": "^2.2.1",
     "tailwindcss": "^2.2.16",

@@ -2,7 +2,23 @@
   <nav>
     <div
       id="Navbar"
-      class="relative z-50 flex flex-row items-center justify-between w-full px-6 py-3 mx-auto mb-4 align-middle bg-white border-t-2 border-green-800 shadow-lg  dark:bg-blue-gray-900"
+      class="
+        relative
+        z-50
+        flex flex-row
+        items-center
+        justify-between
+        w-full
+        px-6
+        py-3
+        mx-auto
+        mb-4
+        align-middle
+        bg-white
+        border-t-2 border-green-800
+        shadow-lg
+        dark:bg-blue-gray-900
+      "
     >
       <h4 class="text-xl font-bold leading-tight underline logo">BryggIO</h4>
       <div class="flex flex-row items-center space-x-6 text-sm">
@@ -21,7 +37,16 @@
           </div>
         </button>
         <router-link
-          class="flex flex-row space-x-2 transition duration-150 ease-in-out rounded  focus:outline-none hover:text-indigo-400"
+          class="
+            flex flex-row
+            space-x-2
+            transition
+            duration-150
+            ease-in-out
+            rounded
+            focus:outline-none
+            hover:text-indigo-400
+          "
           to="/"
           ><svg-icon name="dashboard" size="5" />
           <p>Dashboard</p></router-link
@@ -44,10 +69,7 @@
         NatsClientStatus: {{ natsClientStatus }}
       </p>
       <h3>Active sensors:</h3>
-      <li
-        v-for="sensorClient in activeSensors"
-        :key="sensorClient"
-      >
+      <li v-for="sensorClient in activeSensors" :key="sensorClient">
         {{ sensorClient }}
       </li>
     </div>
