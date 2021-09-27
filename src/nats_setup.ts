@@ -5,7 +5,7 @@ export const natsSettings = {
 };
 
 export enum NatsClientStatus {
-  Connecting = 1,
-  Ready = 2,
-  Error = 3,
+  Connecting = "CONNECTING",
+  Ready = "READY",
+  Error = "ERROR",
 }

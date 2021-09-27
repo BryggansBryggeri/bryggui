@@ -2,6 +2,7 @@ import { Msg, connect, StringCodec, JSONCodec, NatsConnection } from "nats.ws";
 import { SensorMsg, measResultFromMsg } from "@/models/sensor";
 import { ActiveClients } from "@/models/activeClients";
 import { ActorMsg } from "@/models/actor";
+import { NatsClientStatus } from "@/nats_setup";
 import {
   propsAndTargetToJson,
   ControllerProps,
@@ -31,6 +32,7 @@ export class Eventbus {
         pass: natsSettings.pass,
       });
       this.client = nc;
+      this.storeApi.setNatsClientStatus(NatsClientStatus.Ready);
 
       const sensorSub = this.client.subscribe("sensor.*.measurement");
       (async () => {
@@ -43,7 +45,7 @@ export class Eventbus {
         }
       })().then();
     } catch (err) {
-      // store.natsClientStatus = NatsClientStatus.Error;
+      this.storeApi.setNatsClientStatus(NatsClientStatus.Error);
       console.log("Error connecting to NATS client", err);
     }
   }

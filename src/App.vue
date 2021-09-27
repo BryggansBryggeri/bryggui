@@ -7,7 +7,9 @@
       <h3 class="has-text-centered mt-4">Loading...</h3>
     </div>
     <div v-else>
-      <p class="has-text-centered mt-2">Sensor: {{ sensVal }}</p>
+      <p class="has-text-centered mt-2">Mash temp: {{ mashTemp }}</p>
+      <p class="has-text-centered mt-2">Boil temp: {{ boilTemp }}</p>
+      <p class="has-text-centered mt-2">NatsClientStatus: {{ natsClientStatus }}</p>
     </div>
   </div>
 </template>
@@ -26,11 +28,13 @@ export default defineComponent({
     const store = useStore();
     const storeApi = new StoreApi();
     const loading = computed(() => store.state.loading);
+    const natsClientStatus = computed(() => storeApi.getNatsClientStatus());
     onMounted(() => {
       storeApi.fauxLoading();
     });
-    const sensVal = computed(() => storeApi.getSensorValue("mash_temp"));
-    return { loading, sensVal };
+    const mashTemp = computed(() => storeApi.getSensorValue("mash_temp"));
+    const boilTemp = computed(() => storeApi.getSensorValue("boil_temp"));
+    return { loading, mashTemp, boilTemp, natsClientStatus };
   },
 });
 </script>

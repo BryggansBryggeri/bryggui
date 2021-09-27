@@ -1,5 +1,5 @@
+import { TimeStamp } from "@/utils";
 export interface Data<X, Y> {
-  label: string;
   data: DataPoint<X, Y>[];
 }
 
@@ -8,7 +8,7 @@ export interface DataPoint<X, Y> {
   y: Y;
 }
 
-export interface TimeSeries<X, Y> {
+export interface TimeSeries<Y> {
   label: string;
-  data: DataPoint<X, Y>[];
+  data: DataPoint<TimeStamp, Y>[];
 }
