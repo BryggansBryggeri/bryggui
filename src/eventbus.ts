@@ -1,7 +1,7 @@
 import { Msg, connect, StringCodec, JSONCodec, NatsConnection } from "nats.ws";
 import { SensorMsg, measResultFromMsg } from "@/models/sensor";
 import { ActiveClients } from "@/models/activeClients";
-import { ActorMsg } from "@/models/actor";
+import { ActorMsg, actorResultFromMsg } from "@/models/actor";
 import { NatsClientStatus } from "@/nats_setup";
 import {
   propsAndTargetToJson,
@@ -42,6 +42,22 @@ export class Eventbus {
             sensorMsg.id,
             measResultFromMsg(sensorMsg)
           );
+        }
+      })().then();
+
+      const actorSub = this.client.subscribe("actor_pub.*.current_signal");
+      (async () => {
+        for await (const msg of actorSub) {
+          const actorMsg: ActorMsg = actorMsgDec.decode(msg.data);
+          this.storeApi.updateActor(actorMsg.id, actorResultFromMsg(actorMsg));
+        }
+      })().then();
+
+      const contrSub = this.client.subscribe("controller.*.status");
+      (async () => {
+        for await (const msg of contrSub) {
+          const contrMsg: ContrStatusMsg = contrMsgDec.decode(msg.data);
+          this.storeApi.updateContr(contrMsg);
         }
       })().then();
     } catch (err) {

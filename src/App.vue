@@ -4,9 +4,7 @@
       This iteration: Vue 3/Vuex 4/ts/vite/Composition
     </h1>
     <div v-if="loading">
-      <h3 class="has-text-centered mt-4">
-        Loading...
-      </h3>
+      <h3 class="has-text-centered mt-4">Loading...</h3>
     </div>
     <div v-else>
       <sensor id="mash_temp" />
@@ -15,10 +13,7 @@
         NatsClientStatus: {{ natsClientStatus }}
       </p>
       <h3>Active sensors:</h3>
-      <li
-        v-for="sensorClient in activeSensors"
-        :key="sensorClient"
-      >
+      <li v-for="sensorClient in activeSensors" :key="sensorClient">
         {{ sensorClient }}
       </li>
     </div>
