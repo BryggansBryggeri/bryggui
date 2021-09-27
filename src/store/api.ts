@@ -26,4 +26,8 @@ export class StoreApi {
   public getNatsClientStatus(): NatsClientStatus {
     return this.store.state.natsClientStatus;
   }
+
+  public sensorClients(): IterableIterator<string> {
+    return this.store.state.sensors.keys()
+  }
 }

@@ -11,6 +11,10 @@
       <p class="has-text-centered mt-2">Boil temp: {{ boilTemp }}</p>
       <p class="has-text-centered mt-2">NatsClientStatus: {{ natsClientStatus }}</p>
     </div>
+    Active sensors:
+    <li v-for="sensorClient in activeSensors" :key="sensorClient">
+      {{ sensorClient }}
+    </li>
   </div>
 </template>
 
@@ -34,7 +38,8 @@ export default defineComponent({
     });
     const mashTemp = computed(() => storeApi.getSensorValue("mash_temp"));
     const boilTemp = computed(() => storeApi.getSensorValue("boil_temp"));
-    return { loading, mashTemp, boilTemp, natsClientStatus };
+    const activeSensors = computed(() => Array.from(storeApi.sensorClients()));
+    return { loading, mashTemp, boilTemp, natsClientStatus, activeSensors };
   },
 });
 </script>
