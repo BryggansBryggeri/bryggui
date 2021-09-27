@@ -6,7 +6,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
     "format": "prettier --write '**/*.{js,ts,html,vue,json}'",
-    "lint": "eslint --fix --ext .ts,vue --ignore-path .gitignore ."
+    "lint": "eslint --fix --ext .ts,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.3.3",
