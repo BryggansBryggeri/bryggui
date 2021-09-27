@@ -20,10 +20,7 @@ export function useStore(): Store {
   return store as Store;
 }
 
-export type Store = Omit<
-  VuexStore<State>,
-  "commit" | "dispatch"
-> & {
+export type Store = Omit<VuexStore<State>, "commit" | "dispatch"> & {
   commit<K extends keyof Mutations, P extends Parameters<Mutations[K]>[1]>(
     key: K,
     payload: P,
@@ -35,5 +32,4 @@ export type Store = Omit<
     payload?: Parameters<Actions[K]>[1],
     options?: DispatchOptions
   ): ReturnType<Actions[K]>;
-} & {
-};
+} & {};

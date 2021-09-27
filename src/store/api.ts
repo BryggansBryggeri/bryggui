@@ -28,6 +28,6 @@ export class StoreApi {
   }
 
   public sensorClients(): IterableIterator<string> {
-    return this.store.state.sensors.keys()
+    return this.store.state.sensors.keys();
   }
 }
