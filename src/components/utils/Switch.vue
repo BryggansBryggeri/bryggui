@@ -1,7 +1,7 @@
 <template>
   <Switch
     v-model="enabled"
-    :class="enabled ? 'bg-teal-900' : 'bg-teal-700'"
+    :class="enabled ? 'bg-red-900' : 'bg-red-700'"
     class="
       relative
       inline-flex
@@ -20,6 +20,7 @@
       focus-visible:ring-opacity-75
     "
   >
+  
     <span class="sr-only">Use setting</span>
     <span
       aria-hidden="true"
@@ -40,19 +41,15 @@
       "
     />
   </Switch>
+  <span>{{ enabled }}</span>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref } from "vue";
 import { Switch } from "@headlessui/vue";
+import { useToggle } from "@vueuse/core";
 
-export default {
-  components: { Switch },
+const [enabled, toggle] = useToggle()
 
-  setup() {
-    const enabled = ref(false);
 
-    return { enabled };
-  },
-};
 </script>
