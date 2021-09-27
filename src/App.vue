@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-4">
+  <div class="bg-red-200 container mx-auto mt-4">
     <h1 class="is-size-3 has-text-centered p-2 has-text-weight-bold">
       This iteration: Vue 3/Vuex 4/ts/vite/Composition API
     </h1>
