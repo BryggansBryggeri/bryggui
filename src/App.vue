@@ -20,19 +20,30 @@
         dark:bg-blue-gray-900
       "
     >
-      <h4 class="text-xl font-bold leading-tight underline logo">BryggIO</h4>
+      <h4 class="text-xl font-bold leading-tight underline logo">
+        BryggIO
+      </h4>
       <div class="flex flex-row items-center space-x-6 text-sm">
-        <button class="" @click="toggle">
+        <button
+          class=""
+          @click="toggle"
+        >
           <ArrowsExpandIcon class="w-5 h-5" />
         </button>
-        <button class="focus:outline-none focus:ring-0" @click="toggleDark()">
+        <button
+          class="focus:outline-none focus:ring-0"
+          @click="toggleDark()"
+        >
           <div
             v-if="isDark"
             class="transition duration-150 hover:text-yellow-600"
           >
             <SunIcon class="w-6 h-6" />
           </div>
-          <div v-else class="transition duration-150 hover:text-indigo-400">
+          <div
+            v-else
+            class="transition duration-150 hover:text-indigo-400"
+          >
             <MoonIcon class="w-6 h-6" />
           </div>
         </button>
@@ -48,9 +59,13 @@
             hover:text-indigo-400
           "
           to="/"
-          ><svg-icon name="dashboard" size="5" />
-          <p>Dashboard</p></router-link
         >
+          <svg-icon
+            name="dashboard"
+            size="5"
+          />
+          <p>Dashboard</p>
+        </router-link>
       </div>
     </div>
   </nav>
@@ -60,16 +75,21 @@
       This iteration: Vue 3/Vuex 4/ts/vite/Composition API
     </h1>
     <div v-if="loading">
-      <h3 class="mt-4 has-text-centered">Loading...</h3>
+      <h3 class="mt-4 has-text-centered">
+        Loading...
+      </h3>
     </div>
     <div v-else>
-      <sensor id="mash_temp"></sensor>
-      <sensor id="boil_temp"></sensor>
+      <sensor id="mash_temp" />
+      <sensor id="boil_temp" />
       <p class="mt-2 has-text-centered">
         NatsClientStatus: {{ natsClientStatus }}
       </p>
       <h3>Active sensors:</h3>
-      <li v-for="sensorClient in activeSensors" :key="sensorClient">
+      <li
+        v-for="sensorClient in activeSensors"
+        :key="sensorClient"
+      >
         {{ sensorClient }}
       </li>
     </div>
