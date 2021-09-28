@@ -22,7 +22,19 @@
     >
       <h4 class="text-xl font-bold leading-tight underline logo">BryggIO</h4>
       <div class="flex flex-row items-center space-x-6 text-sm">
-        <button class="" @click="toggle">
+        <button
+          class="
+            flex flex-row
+            space-x-2
+            transition
+            duration-150
+            ease-in-out
+            rounded
+            focus:outline-none
+            hover:text-indigo-400
+          "
+          @click="toggle"
+        >
           <ArrowsExpandIcon class="w-5 h-5" />
         </button>
         <button class="focus:outline-none focus:ring-0" @click="toggleDark()">
@@ -47,10 +59,26 @@
             focus:outline-none
             hover:text-indigo-400
           "
+          to="/library"
+        >
+          <BookmarkIcon class="w-5 h-5" />
+          <p>Library</p>
+        </router-link>
+        <router-link
+          class="
+            flex flex-row
+            space-x-2
+            transition
+            duration-150
+            ease-in-out
+            rounded
+            focus:outline-none
+            hover:text-indigo-400
+          "
           to="/"
         >
-          <svg-icon name="dashboard" size="5" />
-          <p>Dashboard</p>
+          <ViewBoardsIcon class="w-5 h-5" />
+          <p>Home</p>
         </router-link>
       </div>
     </div>
@@ -58,10 +86,16 @@
 </template>
 
 <script setup lang="ts">
-import { SunIcon, MoonIcon, ArrowsExpandIcon } from "@heroicons/vue/outline";
+import {
+  SunIcon,
+  MoonIcon,
+  ArrowsExpandIcon,
+  ViewBoardsIcon,
+  BookmarkIcon,
+} from "@heroicons/vue/outline";
 import { useDark, useToggle, useFullscreen } from "@vueuse/core";
 
-const { isFullscreen, enter, exit, toggle } = useFullscreen();
+const { toggle } = useFullscreen();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
