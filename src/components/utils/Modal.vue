@@ -93,7 +93,7 @@ export default {
     const isOpen = ref(true);
 
     return {
-      isOpen: Boolean,
+      isOpen,
       closeModal(): void {
         isOpen.value = false;
       },
