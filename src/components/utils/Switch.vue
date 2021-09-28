@@ -20,7 +20,6 @@
       focus-visible:ring-opacity-75
     "
   >
-  
     <span class="sr-only">Use setting</span>
     <span
       aria-hidden="true"
@@ -49,7 +48,5 @@ import { ref } from "vue";
 import { Switch } from "@headlessui/vue";
 import { useToggle } from "@vueuse/core";
 
-const [enabled, toggle] = useToggle()
-
-
+const [enabled, toggle] = useToggle();
 </script>

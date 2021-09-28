@@ -3,11 +3,33 @@
     <Nav />
 
     <div class="container mx-auto mt-4">
+<div class="flex flex-wrap -mx-5 overflow-hidden">
+
+  <div class="w-1/2 px-5 my-5 overflow-hidden bg-gray-400">
+    Tjenare tjenare<!-- Column Content -->
+  </div>
+
+  <div class="w-1/2 px-5 my-5 overflow-hidden bg-gray-100">
+    Tjenare tjenare<!-- Column Content -->
+  </div>
+
+  <div class="w-1/2 px-5 my-5 overflow-hidden bg-gray-400">
+    Tjenare tjenare<!-- Column Content -->
+  </div>
+
+  <div class="w-1/2 px-5 my-5 overflow-hidden bg-gray-100">
+    Tjenare tjenare<!-- Column Content -->
+  </div>
+
+</div>
+
       <h1 class="p-2 is-size-3 has-text-centered has-text-weight-bold">
         This iteration: Vue 3/Vuex 4/ts/vite/Composition API
       </h1>
       <div v-if="loading">
-        <h3 class="mt-4 has-text-centered">Loading...</h3>
+        <h3 class="mt-4 has-text-centered">
+          Loading...
+        </h3>
       </div>
       <div v-else>
         <sensor id="mash_temp" />
@@ -16,7 +38,10 @@
           NatsClientStatus: {{ natsClientStatus }}
         </p>
         <h3>Active sensors:</h3>
-        <li v-for="sensorClient in activeSensors" :key="sensorClient">
+        <li
+          v-for="sensorClient in activeSensors"
+          :key="sensorClient"
+        >
           {{ sensorClient }}
         </li>
       </div>
@@ -30,8 +55,6 @@
 import Switch from "@/components/utils/Switch.vue";
 import Footer from "@/components/layouts/Footer.vue";
 import Nav from "@/components/layouts/Nav.vue";
-
-
 </script>
 
 <script lang="ts">
