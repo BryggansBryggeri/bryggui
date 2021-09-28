@@ -2,13 +2,16 @@
   <div class="container flex flex-wrap mx-auto overflow-hidden">
     <div class="w-1/4 p-5 my-5 overflow-hidden bg-gray-400">
       <Toggle />
+      <!-- Todo: Emits, Common types such as On/Off Man/Auto etc? -->
     </div>
 
     <div class="w-1/4 p-5 my-5 overflow-hidden bg-gray-100">
-      <DoubleLabelToggle 
+      <DoubleLabelToggle
         left-label="Manual"
-        right-label="Auto" 
+        right-label="Auto"
       />
+      Value is {{ toggleValue1 }}
+      <!-- Todo: Emits, Common types such as On/Off Man/Auto etc? -->
     </div>
 
     <div class="w-1/4 p-5 my-5 overflow-hidden bg-gray-400">
