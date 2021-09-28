@@ -37,8 +37,7 @@ import { StoreApi } from "@/store/api";
 import { eventbus } from "@/eventbus";
 
 export default defineComponent({
-  components: {
-  },
+  components: {},
   setup() {
     eventbus.start();
     const store = useStore();

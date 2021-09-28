@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-between h-screen">
     <Nav />
     <router-view />
-  <Footer />
+    <Footer />
   </div>
 </template>
 
