@@ -2,23 +2,7 @@
   <nav>
     <div
       id="Navbar"
-      class="
-        relative
-        z-50
-        flex flex-row
-        items-center
-        justify-between
-        w-full
-        px-6
-        py-3
-        mx-auto
-        mb-4
-        align-middle
-        bg-white
-        border-t-2 border-green-800
-        shadow-lg
-        dark:bg-gray-900
-      "
+      class="relative z-50 flex flex-row items-center justify-between w-full px-6 py-3 mx-auto mb-4 align-middle bg-white border-t-2 border-green-800 shadow-lg  dark:bg-gray-900"
     >
       <h4 class="text-xl font-bold leading-tight underline logo">
         BryggIO
@@ -48,22 +32,10 @@
           </div>
         </button>
         <router-link
-          class="
-            flex flex-row
-            space-x-2
-            transition
-            duration-150
-            ease-in-out
-            rounded
-            focus:outline-none
-            hover:text-indigo-400
-          "
+          class="flex flex-row space-x-2 transition duration-150 ease-in-out rounded  focus:outline-none hover:text-indigo-400"
           to="/"
         >
-          <svg-icon
-            name="dashboard"
-            size="5"
-          />
+          <ViewBoardsIcon class="w-5 h-5" />
           <p>Dashboard</p>
         </router-link>
       </div>
@@ -72,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { SunIcon, MoonIcon, ArrowsExpandIcon } from "@heroicons/vue/outline";
+import { SunIcon, MoonIcon, ArrowsExpandIcon, ViewBoardsIcon } from "@heroicons/vue/outline";
 import { useDark, useToggle, useFullscreen } from "@vueuse/core";
 
 const { isFullscreen, enter, exit, toggle } = useFullscreen();
