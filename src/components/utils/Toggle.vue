@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+// import { ref } from "vue";
 import { Switch } from "@headlessui/vue";
 import { useToggle } from "@vueuse/core";
 
-const [enabled, toggle] = useToggle();
+const [enabled] = useToggle();
 </script>

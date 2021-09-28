@@ -44,10 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import { SunIcon, MoonIcon, ArrowsExpandIcon, ViewBoardsIcon } from "@heroicons/vue/outline";
+import {
+  SunIcon,
+  MoonIcon,
+  ArrowsExpandIcon,
+  ViewBoardsIcon,
+} from "@heroicons/vue/outline";
 import { useDark, useToggle, useFullscreen } from "@vueuse/core";
 
-const { isFullscreen, enter, exit, toggle } = useFullscreen();
+const { toggle } = useFullscreen();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
