@@ -38,7 +38,6 @@ import { eventbus } from "@/eventbus";
 export default defineComponent({
   components: {},
   setup() {
-    eventbus.start();
     const store = useStore();
     const storeApi = new StoreApi();
     const loading = computed(() => store.state.loading);
