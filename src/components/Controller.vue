@@ -1,8 +1,8 @@
 <template>
   <div class="container mx-auto mt-4">
     <p class="mt-2 has-text-centered">
-      Controller: {{ id }}
-      <sensor :id="sensorId" />
+      Controller: {{ props.contrProps.controllerId }}
+      <sensor :id="props.contrProps.sensorId" />
     </p>
   </div>
 </template>
@@ -21,10 +21,7 @@ export default defineComponent({
   },
   setup(props) {
     const storeApi = new StoreApi();
-    const val = 3;
-    const id = props.contrProps.controllerId;
-    const sensorId = props.contrProps.sensorId;
-    return { val, id, sensorId };
+    return { props };
   },
 });
 </script>

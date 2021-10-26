@@ -26,9 +26,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted } from "vue";
-import { useStore } from "@/store";
 import { StoreApi } from "@/store/api";
-import Sensor from "@/components/Sensor.vue";
 import Controller from "@/components/Controller.vue";
 import { ControllerProps } from "@/models/controller";
 
@@ -38,7 +36,7 @@ const mash: ControllerProps = {
   sensorId: "mash_temp",
   type: "manual",
 };
-//
+
 // const boil: ControllerProps = {
 //   controllerId: "boil",
 //   actorId: "boil_heater",
@@ -47,9 +45,8 @@ const mash: ControllerProps = {
 // };
 
 export default defineComponent({
-  components: { Sensor, Controller },
+  components: { Controller },
   setup() {
-    const store = useStore();
     const storeApi = new StoreApi();
     const loading = computed(() => storeApi.isLoading());
     const natsClientStatus = computed(() => storeApi.getNatsClientStatus());
