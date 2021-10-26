@@ -29,8 +29,16 @@ export class StoreApi {
     this.store.dispatch(ActionTypes.FauxLoading);
   }
 
+  public isLoading(): boolean {
+    return this.store.state.loading;
+  }
+
   public getSensorValue(id: string): MeasResult | undefined {
     return this.store.state.sensors.get(id);
+  }
+
+  public getContrValue(id: string): ContrResult | undefined {
+    return this.store.state.controllers.get(id);
   }
 
   public getNatsClientStatus(): NatsClientStatus {

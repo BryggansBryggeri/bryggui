@@ -49,7 +49,7 @@ export class Eventbus {
       (async () => {
         for await (const msg of actorSub) {
           const actorMsg: ActorMsg = actorMsgDec.decode(msg.data);
-          this.storeApi.updateActor(actorMsg.id, actorResultFromMsg(actorMsg));
+          this.storeApi.updateActor(actorMsg.signal.id, actorResultFromMsg(actorMsg));
         }
       })().then();
 
@@ -57,7 +57,7 @@ export class Eventbus {
       (async () => {
         for await (const msg of contrSub) {
           const contrMsg: ContrStatusMsg = contrMsgDec.decode(msg.data);
-          this.storeApi.updateContr(contrMsg);
+          this.storeApi.updateController(contrMsg);
         }
       })().then();
     } catch (err) {

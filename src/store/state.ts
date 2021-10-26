@@ -1,13 +1,13 @@
 import { MeasResult } from "@/models/sensor";
 import { ActorResult } from "@/models/actor";
-import { ContrStatus } from "@/models/controller";
+import { ContrResult } from "@/models/controller";
 import { NatsClientStatus } from "@/nats_setup";
 
 export type State = {
   loading: boolean;
   sensors: Map<string, MeasResult>;
   actors: Map<string, ActorResult>;
-  controllers: Map<string, ContrStatus>;
+  controllers: Map<string, ContrResult>;
   natsClientStatus: NatsClientStatus;
 };
 

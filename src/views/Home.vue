@@ -4,17 +4,27 @@
       This iteration: Vue 3/Vuex 4/ts/vite/Composition API
     </h1>
     <div v-if="loading">
-      <h3 class="mt-4 has-text-centered">Loading...</h3>
+      <h3 class="mt-4 has-text-centered">
+        Loading...
+      </h3>
     </div>
     <div v-else>
-      <p class="mt-2 has-text-centered">Mash temp: {{ mashTemp }}</p>
-      <p class="mt-2 has-text-centered">Boil temp: {{ boilTemp }}</p>
+      <!-- <controller :contr-props="mash" /> -->
+      <div>
+        <h2>Sensors:</h2>
+        <sensor id="mash_temp" />
+        <sensor id="boil_temp" />
+      </div>
+
       <p class="mt-2 has-text-centered">
         NatsClientStatus: {{ natsClientStatus }}
       </p>
     </div>
     Active sensors:
-    <li v-for="sensorClient in activeSensors" :key="sensorClient">
+    <li
+      v-for="sensorClient in activeSensors"
+      :key="sensorClient"
+    >
       {{ sensorClient }}
     </li>
   </div>
@@ -24,22 +34,36 @@
 import { computed, defineComponent, onMounted } from "vue";
 import { useStore } from "@/store";
 import { StoreApi } from "@/store/api";
-import { eventbus } from "@/eventbus";
+import Sensor from "@/components/Sensor.vue";
+// import Controller from "@/components/Controller.vue";
+import { ControllerProps } from "@/models/controller";
+// 
+const mash: ControllerProps = {
+  controllerId: "mash",
+  actorId: "mash_heater",
+  sensorId: "mash_temp",
+  type: "manual",
+};
+// 
+// const boil: ControllerProps = {
+//   controllerId: "boil",
+//   actorId: "boil_heater",
+//   sensorId: "boil_temp",
+//   type: "manual",
+// };
 
 export default defineComponent({
-  components: {},
+  components: { Sensor },
   setup() {
     const store = useStore();
     const storeApi = new StoreApi();
-    const loading = computed(() => store.state.loading);
+    const loading = computed(() => storeApi.isLoading());
     const natsClientStatus = computed(() => storeApi.getNatsClientStatus());
     onMounted(() => {
       storeApi.fauxLoading();
     });
-    const mashTemp = computed(() => storeApi.getSensorValue("mash_temp"));
-    const boilTemp = computed(() => storeApi.getSensorValue("boil_temp"));
     const activeSensors = computed(() => Array.from(storeApi.sensorClients()));
-    return { loading, mashTemp, boilTemp, natsClientStatus, activeSensors };
+    return { loading, natsClientStatus, activeSensors, mash };
   },
 });
 </script>

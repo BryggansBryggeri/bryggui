@@ -6,7 +6,7 @@ export type ContrType =
   | { hysteresis: { offset_on: number; offset_off: number } }
   | { pid: { kp: number; ki: number; kd: number } };
 
-export interface ControllerProps {
+export type ControllerProps = {
   controllerId: string;
   actorId: string;
   sensorId: string;
