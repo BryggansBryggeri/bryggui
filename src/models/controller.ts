@@ -38,10 +38,6 @@ export interface NewContrData {
 
 export type ContrErr = string;
 export type Target = number;
-export enum Mode {
-  Man = 0,
-  Auto = 1,
-}
 
 export interface ContrStatusMsg {
   status: {
@@ -50,25 +46,6 @@ export interface ContrStatusMsg {
     target: Target;
     type: string;
   };
-}
-
-function modeFromType(type: string): Mode {
-  if (type === "manual") {
-    return Mode.Man;
-  }
-  return Mode.Auto;
-}
-
-export function typeFromMode(mode: Mode): ContrType {
-  switch (mode) {
-    case Mode.Man:
-      return "manual";
-    case Mode.Auto:
-      return { hysteresis: { offset_on: 10.0, offset_off: 5.0 } };
-    // return { pid: { kp: 0.7, ki: 0.0, kd: 0.0 } };
-    default:
-      throw new Error("Unreachable typeFromMode");
-  }
 }
 
 export interface ContrStatus {
@@ -95,4 +72,28 @@ export function contrResultFromMsg(msg: ContrStatusMsg): ContrResult {
     timestamp: status.timestamp,
   };
   return newContrResultOk(data);
+}
+
+export enum Mode {
+  Man = "Manual",
+  Auto = "Auto",
+}
+
+function modeFromType(type: string): Mode {
+  if (type === "manual") {
+    return Mode.Man;
+  }
+  return Mode.Auto;
+}
+
+export function typeFromMode(mode: Mode): ContrType {
+  switch (mode) {
+    case Mode.Man:
+      return "manual";
+    case Mode.Auto:
+      return { hysteresis: { offset_on: 10.0, offset_off: 5.0 } };
+    // return { pid: { kp: 0.7, ki: 0.0, kd: 0.0 } };
+    default:
+      throw new Error("Unreachable typeFromMode");
+  }
 }

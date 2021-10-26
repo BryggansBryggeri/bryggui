@@ -8,6 +8,7 @@ import {
   ControllerProps,
   ContrStatusMsg,
   Target,
+  contrResultFromMsg,
 } from "@/models/controller";
 import { natsSettings } from "@/nats_setup";
 import { StoreApi } from "@/store/api";
@@ -25,6 +26,7 @@ export class Eventbus {
   private storeApi = new StoreApi();
 
   public async start(): Promise<void> {
+    // TODO add initialising logic that has to be awaited, e.g. list_active_clients.
     try {
       const nc = await connect({
         servers: natsSettings.servers,
@@ -32,7 +34,7 @@ export class Eventbus {
         pass: natsSettings.pass,
       });
       this.client = nc;
-      this.storeApi.setNatsClientStatus(NatsClientStatus.Ready);
+      this.storeApi.updateNatsClientStatus(NatsClientStatus.Ready);
 
       const sensorSub = this.client.subscribe("sensor.*.measurement");
       (async () => {
@@ -60,11 +62,12 @@ export class Eventbus {
       (async () => {
         for await (const msg of contrSub) {
           const contrMsg: ContrStatusMsg = contrMsgDec.decode(msg.data);
-          this.storeApi.updateController(contrMsg);
+          const contrStatus = contrResultFromMsg(contrMsg);
+          this.storeApi.updateController(contrMsg.status.id, contrStatus);
         }
       })().then();
     } catch (err) {
-      this.storeApi.setNatsClientStatus(NatsClientStatus.Error);
+      this.storeApi.updateNatsClientStatus(NatsClientStatus.Error);
       console.log("Error connecting to NATS client", err);
     }
   }
@@ -124,23 +127,6 @@ export class Eventbus {
     }
   }
 
-  public async setTarget(contrId: string, newTarget: Target): Promise<void> {
-    // TODO: stupid serialization.
-    const parsedTarget = JSON.parse(`${newTarget}`);
-    try {
-      const reply = await this.request(
-        `controller.${contrId}.set_target`,
-        parsedTarget,
-        TIMEOUT_MAX
-      );
-      if (reply) {
-        console.log(sc.decode(reply.data));
-      }
-    } catch (err) {
-      console.log("Failed setting target", err);
-    }
-  }
-
   public async switchController(
     props: ControllerProps,
     newTarget: number
@@ -157,6 +143,23 @@ export class Eventbus {
       }
     } catch (err) {
       console.log("Error switching controllers: ", err);
+    }
+  }
+
+  public async setTarget(contrId: string, newTarget: Target): Promise<void> {
+    // TODO: stupid serialization.
+    const parsedTarget = JSON.parse(`${newTarget}`);
+    try {
+      const reply = await this.request(
+        `controller.${contrId}.set_target`,
+        parsedTarget,
+        TIMEOUT_MAX
+      );
+      if (reply) {
+        console.log(sc.decode(reply.data));
+      }
+    } catch (err) {
+      console.log("Failed setting target", err);
     }
   }
 
