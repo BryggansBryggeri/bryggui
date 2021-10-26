@@ -9,13 +9,7 @@
       </h3>
     </div>
     <div v-else>
-      <!-- <controller :contr-props="mash" /> -->
-      <div>
-        <h2>Sensors:</h2>
-        <sensor id="mash_temp" />
-        <sensor id="boil_temp" />
-      </div>
-
+      <controller :contr-props="mash" />
       <p class="mt-2 has-text-centered">
         NatsClientStatus: {{ natsClientStatus }}
       </p>
@@ -35,16 +29,16 @@ import { computed, defineComponent, onMounted } from "vue";
 import { useStore } from "@/store";
 import { StoreApi } from "@/store/api";
 import Sensor from "@/components/Sensor.vue";
-// import Controller from "@/components/Controller.vue";
+import Controller from "@/components/Controller.vue";
 import { ControllerProps } from "@/models/controller";
-// 
+
 const mash: ControllerProps = {
   controllerId: "mash",
   actorId: "mash_heater",
   sensorId: "mash_temp",
   type: "manual",
 };
-// 
+//
 // const boil: ControllerProps = {
 //   controllerId: "boil",
 //   actorId: "boil_heater",
@@ -53,7 +47,7 @@ const mash: ControllerProps = {
 // };
 
 export default defineComponent({
-  components: { Sensor },
+  components: { Sensor, Controller },
   setup() {
     const store = useStore();
     const storeApi = new StoreApi();

@@ -11,7 +11,7 @@ export type ControllerProps = {
   actorId: string;
   sensorId: string;
   type: ContrType;
-}
+};
 
 // Manual serialization, stupid but don't know how to do it otherwise
 export function propsAndTargetToJson(

@@ -49,7 +49,10 @@ export class Eventbus {
       (async () => {
         for await (const msg of actorSub) {
           const actorMsg: ActorMsg = actorMsgDec.decode(msg.data);
-          this.storeApi.updateActor(actorMsg.signal.id, actorResultFromMsg(actorMsg));
+          this.storeApi.updateActor(
+            actorMsg.signal.id,
+            actorResultFromMsg(actorMsg)
+          );
         }
       })().then();
 
