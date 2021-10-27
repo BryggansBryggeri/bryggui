@@ -26,7 +26,7 @@ export class StoreApi {
     this.store.commit(MutationType.UpdateController, [id, val]);
   }
 
-  public startController(props: ControllerProps, target: number) {
+  public startController(props: ControllerProps, target: number): void {
     eventbus.startController(props, target);
   }
 

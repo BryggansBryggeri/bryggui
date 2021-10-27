@@ -19,8 +19,12 @@ import { StoreApi } from "@/store/api";
 export default defineComponent({
   setup() {
     const storeApi = new StoreApi();
-    const controllers = computed(() => Array.from(storeApi.getActiveClients().controllers));
-    const sensors = computed(() => Array.from(storeApi.getActiveClients().sensors));
+    const controllers = computed(() =>
+      Array.from(storeApi.getActiveClients().controllers)
+    );
+    const sensors = computed(() =>
+      Array.from(storeApi.getActiveClients().sensors)
+    );
     return { controllers, sensors };
   },
 });
