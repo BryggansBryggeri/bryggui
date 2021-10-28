@@ -2,17 +2,15 @@
   <div class="container mx-auto mt-4">
     <p class="mt-2 has-text-centered" />
     <h3>Controller</h3>
-    <on-off-toggle :state="contrState" @click="onClick" />
+    <on-off-toggle :state="contrActive" :disabled="disabled" @click="onClick" />
     <p>{{ props.contrProps.controllerId }}</p>
-    <p>active: {{ active }}</p>
     <p>status: {{ status }}</p>
     <sensor :id="props.contrProps.sensorId" />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
-import { useToggle } from "@vueuse/core";
+import { ref, computed, defineComponent, PropType } from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps } from "@/models/controller";
 import Sensor from "@/components/Sensor.vue";
@@ -25,7 +23,8 @@ export default defineComponent({
   },
   setup(props) {
     const storeApi = new StoreApi();
-    const active = computed(() =>
+    const disabled = ref(false);
+    const contrActive = computed(() =>
       Array.from(storeApi.getActiveClients().controllers).includes(
         props.contrProps.controllerId
       )
@@ -33,13 +32,19 @@ export default defineComponent({
     const status = computed(() =>
       storeApi.getContrValue(props.contrProps.controllerId)
     );
-    const [contrState, toggle] = useToggle();
     function onClick() {
-      console.log("Click", contrState);
-      contrState.value = !contrState.value;
-      //toggle();
+      if (!contrActive.value) {
+        disabled.value = true;
+        storeApi.startController(props.contrProps, 0.0);
+        disabled.value = false;
+      }
+      if (contrActive.value) {
+        disabled.value = true;
+        storeApi.stopController(props.contrProps);
+        disabled.value = false;
+      }
     }
-    return { active, props, status, contrState, onClick };
+    return { props, status, contrActive, disabled, onClick };
   },
 });
 </script>

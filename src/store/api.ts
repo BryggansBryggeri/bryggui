@@ -26,8 +26,13 @@ export class StoreApi {
     this.store.commit(MutationType.UpdateController, [id, val]);
   }
 
-  public startController(props: ControllerProps, target: number): void {
-    eventbus.startController(props, target);
+  public async startController(props: ControllerProps, target: number): Promise<void> {
+    await eventbus.startController(props, target);
+  }
+
+  public async stopController(props: ControllerProps): Promise<void> {
+    await eventbus.stopController(props);
+    this.store.commit(MutationType.RemoveClient, props.controllerId);
   }
 
   public getContrValue(id: string): ContrResult | undefined {

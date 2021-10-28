@@ -7,6 +7,7 @@ import { NatsClientStatus } from "@/nats_setup";
 
 export enum MutationType {
   SetLoading = "SET_LOADING",
+  RemoveClient = "REMOVE_CLIENT",
   SetNatsClientStatus = "SET_NATS_CLIENT_STATUS",
   UpdateSensor = "UPDATE_SENSOR",
   UpdateActor = "UPDATE_ACTOR",
@@ -19,6 +20,7 @@ export type Mutations = {
     state: State,
     status: NatsClientStatus
   ): void;
+  [MutationType.RemoveClient](state: State, id: string): void;
   [MutationType.UpdateSensor](state: State, meas: [string, MeasResult]): void;
   [MutationType.UpdateActor](state: State, val: [string, ActorResult]): void;
   [MutationType.UpdateController](
@@ -30,6 +32,9 @@ export type Mutations = {
 export const mutations: MutationTree<State> & Mutations = {
   [MutationType.SetLoading](state, value) {
     state.loading = value;
+  },
+  [MutationType.RemoveClient](state, id) {
+    state.controllers.delete(id);
   },
   [MutationType.SetNatsClientStatus](state, status) {
     state.natsClientStatus = status;
