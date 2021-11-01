@@ -22,11 +22,18 @@ export class StoreApi {
     this.store.commit(MutationType.UpdateActor, [id, val]);
   }
 
+  public getActorValue(id: string): ActorResult | undefined {
+    return this.store.state.actors.get(id);
+  }
+
   public updateController(id: string, val: ContrResult): void {
     this.store.commit(MutationType.UpdateController, [id, val]);
   }
 
-  public async startController(props: ControllerProps, target: number): Promise<void> {
+  public async startController(
+    props: ControllerProps,
+    target: number
+  ): Promise<void> {
     await eventbus.startController(props, target);
   }
 
@@ -58,9 +65,11 @@ export class StoreApi {
   public getActiveClients(): ActiveClients {
     const controllers = this.store.state.controllers.keys();
     const sensors = this.store.state.sensors.keys();
+    const actors = this.store.state.actors.keys();
     const clients: ActiveClients = {
       controllers,
       sensors,
+      actors,
     };
     return clients;
   }
@@ -69,4 +78,5 @@ export class StoreApi {
 interface ActiveClients {
   controllers: IterableIterator<string>;
   sensors: IterableIterator<string>;
+  actors: IterableIterator<string>;
 }

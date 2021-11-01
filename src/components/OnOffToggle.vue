@@ -2,7 +2,9 @@
   <div>
     <button>
       <p v-if="props.disabled">disabled</p>
-      <p v-else>{{ props.state ? "ON" : "OFF" }}</p>
+      <p v-else>
+        {{ props.state ? "ON" : "OFF" }}
+      </p>
     </button>
   </div>
 </template>

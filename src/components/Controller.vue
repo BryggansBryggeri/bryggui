@@ -6,6 +6,7 @@
     <p>{{ props.contrProps.controllerId }}</p>
     <p>status: {{ status }}</p>
     <sensor :id="props.contrProps.sensorId" />
+    <actor :id="props.contrProps.actorId" />
   </div>
 </template>
 
@@ -14,10 +15,11 @@ import { ref, computed, defineComponent, PropType } from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps } from "@/models/controller";
 import Sensor from "@/components/Sensor.vue";
+import Actor from "@/components/Actor.vue";
 import OnOffToggle from "@/components/OnOffToggle.vue";
 
 export default defineComponent({
-  components: { Sensor, OnOffToggle },
+  components: { Sensor, Actor, OnOffToggle },
   props: {
     contrProps: { type: Object as PropType<ControllerProps>, required: true },
   },

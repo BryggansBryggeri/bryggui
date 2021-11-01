@@ -9,6 +9,10 @@
     <li v-for="sensor in sensors" :key="sensor">
       {{ sensor }}
     </li>
+    <h4>Actors</h4>
+    <li v-for="actor in actors" :key="actor">
+      {{ actor }}
+    </li>
   </div>
 </template>
 
@@ -25,7 +29,10 @@ export default defineComponent({
     const sensors = computed(() =>
       Array.from(storeApi.getActiveClients().sensors)
     );
-    return { controllers, sensors };
+    const actors = computed(() =>
+      Array.from(storeApi.getActiveClients().actors)
+    );
+    return { controllers, sensors, actors };
   },
 });
 </script>
