@@ -1,6 +1,6 @@
 import { MeasResult } from "@/models/sensor";
 import { ActorResult } from "@/models/actor";
-import { ControllerProps, ContrResult } from "@/models/controller";
+import { ControllerProps, ContrResult, Target } from "@/models/controller";
 import { useStore, Store } from "@/store";
 import { MutationType } from "@/store/mutations";
 import { ActionTypes } from "@/store/actions";
@@ -26,10 +26,6 @@ export class StoreApi {
     return this.store.state.actors.get(id);
   }
 
-  public updateController(id: string, val: ContrResult): void {
-    this.store.commit(MutationType.UpdateController, [id, val]);
-  }
-
   public async startController(
     props: ControllerProps,
     target: number
@@ -42,8 +38,16 @@ export class StoreApi {
     this.store.commit(MutationType.RemoveClient, props.controllerId);
   }
 
+  public updateController(id: string, val: ContrResult): void {
+    this.store.commit(MutationType.UpdateController, [id, val]);
+  }
+
   public getContrValue(id: string): ContrResult | undefined {
     return this.store.state.controllers.get(id);
+  }
+
+  public setContrTarget(id: string, newTarget: Target): void {
+    eventbus.setTarget(id, newTarget);
   }
 
   public updateNatsClientStatus(status: NatsClientStatus): void {

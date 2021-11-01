@@ -7,6 +7,14 @@
     <p>status: {{ status }}</p>
     <sensor :id="props.contrProps.sensorId" />
     <actor :id="props.contrProps.actorId" />
+    <div class="target-input">
+      Set target:
+      <input
+        v-model="parseTarget"
+        type="text"
+        @keydown.enter="setTarget(parseTarget)"
+      />
+    </div>
   </div>
 </template>
 
@@ -46,7 +54,26 @@ export default defineComponent({
         disabled.value = false;
       }
     }
-    return { props, status, contrActive, disabled, onClick };
+    const parseTarget = ref("");
+    function setTarget(textInput: string) {
+      console.log(textInput);
+      const newTarget = parseFloat(textInput);
+      if (!Number.isNaN(newTarget)) {
+        storeApi.setContrTarget(props.contrProps.controllerId, newTarget);
+      } else {
+        console.log("Error parsing new target", textInput);
+      }
+      parseTarget.value = "";
+    }
+    return {
+      props,
+      status,
+      parseTarget,
+      setTarget,
+      contrActive,
+      disabled,
+      onClick,
+    };
   },
 });
 </script>
