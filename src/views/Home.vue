@@ -1,8 +1,5 @@
 <template>
   <div class="flex flex-col justify-between h-screen">
-    <h1 class="p-2 is-size-3 has-text-centered has-text-weight-bold">
-      This iteration: Vue 3/Vuex 4/ts/vite/Composition API
-    </h1>
     <div v-if="loading">
       <h3 class="mt-4 has-text-centered">Loading...</h3>
     </div>
