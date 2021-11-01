@@ -1,16 +1,16 @@
 <template>
-  <div class="flex flex-col justify-between h-screen">
-    <h1 class="p-2 is-size-3 has-text-centered has-text-weight-bold">
-      This iteration: Vue 3/Vuex 4/ts/vite/Composition API
-    </h1>
+  <div class="">
     <div v-if="loading">
-      <h3 class="mt-4 has-text-centered">Loading...</h3>
+      <h3 class="">Loading...</h3>
     </div>
-    <div v-else>
-      <p class="mt-2 has-text-centered">
+    <div v-else class="flex flex-row justify-around space-x-6">
+      <p class="">
         NatsClientStatus: {{ natsClientStatus }}
       </p>
+      <div class="rounded-lg bg-neutral-600 flex flex-col pt-3 py-2 px-3 space-y-3 flex-grow text-white">
       <controller :contr-props="mashController" />
+      </div>
+      <controller :contr-props="boilController" />
       <active-clients />
     </div>
   </div>

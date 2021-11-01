@@ -1,11 +1,31 @@
 <template>
-  <div class="container mx-auto mt-4">
-    <p class="mt-2 has-text-centered" />
-    <h3>Controller</h3>
-    <on-off-toggle :state="contrActive" :disabled="disabled" @click="onClick" />
-    <p>{{ props.contrProps.controllerId }}</p>
+  <div class="rounded-lg bg-neutral-600 flex flex-col pt-3 py-2 px-3 space-y-3 flex-grow text-white">
+    <div class="flex flex-row justify-between">
+      <span class="text-xl text-white font-bold">VESSEL NAME</span>
+      <on-off-toggle
+        :state="contrActive"
+        :disabled="disabled"
+        @click="onClick"
+      />
+    </div>
+    <hr class="w-full h-px rounded-full bg-white">
+    <div>
+      <span class="font-semibold">Controller: </span>
+      <span> {{ props.contrProps.controllerId }} </span>
+      <ul class="pl-3">
+        <li>
+          <sensor :id="props.contrProps.sensorId" />
+        </li>
+        <li>
+          <span class="font-semibold">Actor:</span>
+          <span>actor</span>
+          <span class="">actor status</span>
+        </li>
+      </ul>
+    </div>
+    <hr class="w-full h-px rounded-full bg-white">
+
     <p>status: {{ status }}</p>
-    <sensor :id="props.contrProps.sensorId" />
   </div>
 </template>
 
