@@ -38,6 +38,13 @@ export class StoreApi {
     this.store.commit(MutationType.RemoveClient, props.controllerId);
   }
 
+  public async switchController(
+    props: ControllerProps,
+    newTarget: Target
+  ): Promise<void> {
+    await eventbus.switchController(props, newTarget);
+  }
+
   public updateController(id: string, val: ContrResult): void {
     this.store.commit(MutationType.UpdateController, [id, val]);
   }

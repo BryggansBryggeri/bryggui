@@ -28,10 +28,11 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, defineComponent, PropType } from "vue";
+import { ref, computed, ComputedRef, defineComponent, PropType } from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps } from "@/models/controller";
-import { Mode } from "@/models/controller";
+import { Mode, typeFromMode } from "@/models/controller";
+import { match } from "@/models/result";
 import Sensor from "@/components/Sensor.vue";
 import Actor from "@/components/Actor.vue";
 import OnOffToggle from "@/components/OnOffToggle.vue";
@@ -54,19 +55,28 @@ export default defineComponent({
       storeApi.getContrValue(props.contrProps.controllerId)
     );
 
-    const contrMode = Mode.Man;
+    const contrMode: ComputedRef<Mode> = computed(() => {
+      const stat = storeApi.getContrValue(props.contrProps.controllerId);
+      if (stat === undefined) {
+        return Mode.Man;
+      } else {
+        return match(
+          stat,
+          (ok) => ok.mode,
+          () => Mode.Man
+        );
+      }
+    });
+
     function toggleContr() {
       if (!disabled.value) {
+        disabled.value = true;
         if (!contrActive.value) {
-          disabled.value = true;
           storeApi.startController(props.contrProps, 0.0);
-          disabled.value = false;
-        }
-        else {
-          disabled.value = true;
+        } else {
           storeApi.stopController(props.contrProps);
-          disabled.value = false;
         }
+        disabled.value = false;
       } else {
         console.log("Clicked while contr. disabled.");
       }
@@ -74,14 +84,20 @@ export default defineComponent({
 
     function toggleMode() {
       if (!disabled.value) {
-        if (contrMode.valueOf() == Mode.Man.valueOf()) {
-          disabled.value = true;
-          disabled.value = false;
+        disabled.value = true;
+        // TODO: Not sure if this destroys reactivity.
+        let newContrProps: ControllerProps = Object.assign(
+          {},
+          props.contrProps
+        );
+        if (contrMode.value.valueOf() == Mode.Man.valueOf()) {
+          newContrProps.type = typeFromMode(Mode.Auto);
+          storeApi.switchController(newContrProps, 0.0);
+        } else {
+          newContrProps.type = typeFromMode(Mode.Man);
+          storeApi.switchController(newContrProps, 0.0);
         }
-        else {
-          disabled.value = true;
-          disabled.value = false;
-        }
+        disabled.value = false;
       } else {
         console.log("Clicked while contr. disabled.");
       }
