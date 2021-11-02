@@ -2,7 +2,16 @@
   <div class="container mx-auto mt-4">
     <p class="mt-2 has-text-centered" />
     <h3>Controller</h3>
-    <on-off-toggle :state="contrActive" :disabled="disabled" @click="onClick" />
+    <on-off-toggle
+      :state="contrActive"
+      :disabled="disabled"
+      @click="toggleContr"
+    />
+    <man-auto-toggle
+      :mode="contrMode"
+      :disabled="disabled"
+      @click="toggleMode"
+    />
     <p>{{ props.contrProps.controllerId }}</p>
     <p>status: {{ status }}</p>
     <sensor :id="props.contrProps.sensorId" />
@@ -22,12 +31,14 @@
 import { ref, computed, defineComponent, PropType } from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps } from "@/models/controller";
+import { Mode } from "@/models/controller";
 import Sensor from "@/components/Sensor.vue";
 import Actor from "@/components/Actor.vue";
 import OnOffToggle from "@/components/OnOffToggle.vue";
+import ManAutoToggle from "@/components/ManAutoToggle.vue";
 
 export default defineComponent({
-  components: { Sensor, Actor, OnOffToggle },
+  components: { Sensor, Actor, OnOffToggle, ManAutoToggle },
   props: {
     contrProps: { type: Object as PropType<ControllerProps>, required: true },
   },
@@ -42,18 +53,40 @@ export default defineComponent({
     const status = computed(() =>
       storeApi.getContrValue(props.contrProps.controllerId)
     );
-    function onClick() {
-      if (!contrActive.value) {
-        disabled.value = true;
-        storeApi.startController(props.contrProps, 0.0);
-        disabled.value = false;
-      }
-      if (contrActive.value) {
-        disabled.value = true;
-        storeApi.stopController(props.contrProps);
-        disabled.value = false;
+
+    const contrMode = Mode.Man;
+    function toggleContr() {
+      if (!disabled.value) {
+        if (!contrActive.value) {
+          disabled.value = true;
+          storeApi.startController(props.contrProps, 0.0);
+          disabled.value = false;
+        }
+        else {
+          disabled.value = true;
+          storeApi.stopController(props.contrProps);
+          disabled.value = false;
+        }
+      } else {
+        console.log("Clicked while contr. disabled.");
       }
     }
+
+    function toggleMode() {
+      if (!disabled.value) {
+        if (contrMode.valueOf() == Mode.Man.valueOf()) {
+          disabled.value = true;
+          disabled.value = false;
+        }
+        else {
+          disabled.value = true;
+          disabled.value = false;
+        }
+      } else {
+        console.log("Clicked while contr. disabled.");
+      }
+    }
+
     const parseTarget = ref("");
     function setTarget(textInput: string) {
       console.log(textInput);
@@ -71,8 +104,10 @@ export default defineComponent({
       parseTarget,
       setTarget,
       contrActive,
+      contrMode,
       disabled,
-      onClick,
+      toggleContr,
+      toggleMode,
     };
   },
 });
