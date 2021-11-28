@@ -22,7 +22,7 @@
         v-model="parseTarget"
         type="text"
         @keydown.enter="setTarget(parseTarget)"
-      />
+      >%
     </div>
   </div>
 </template>
@@ -30,13 +30,21 @@
 <script lang="ts">
 import { ref, computed, ComputedRef, defineComponent, PropType } from "vue";
 import { StoreApi } from "@/store/api";
-import type { ControllerProps } from "@/models/controller";
+import type { ControllerProps, ContrStatus } from "@/models/controller";
 import { Mode, typeFromMode } from "@/models/controller";
 import { match } from "@/models/result";
 import Sensor from "@/components/Sensor.vue";
 import Actor from "@/components/Actor.vue";
 import OnOffToggle from "@/components/OnOffToggle.vue";
 import ManAutoToggle from "@/components/ManAutoToggle.vue";
+
+function dispContr(status: ContrStatus): string {
+  if (status.mode == Mode.Man) {
+    return `${status.target * 100}%`;
+  } else {
+    return `${status.target}C`;
+  }
+}
 
 export default defineComponent({
   components: { Sensor, Actor, OnOffToggle, ManAutoToggle },
@@ -51,9 +59,19 @@ export default defineComponent({
         props.contrProps.controllerId
       )
     );
-    const status = computed(() =>
-      storeApi.getContrValue(props.contrProps.controllerId)
-    );
+    const status = computed(() => {
+      // storeApi.getContrValue(props.contrProps.controllerId)
+      const raw = storeApi.getContrValue(props.contrProps.controllerId);
+      if (raw !== undefined) {
+        return match(
+          raw,
+          (ok) => dispContr(ok),
+          (err) => `${err}`
+        );
+      } else {
+        return "Inactive";
+      }
+    });
 
     const contrMode: ComputedRef<Mode> = computed(() => {
       const stat = storeApi.getContrValue(props.contrProps.controllerId);
@@ -105,10 +123,13 @@ export default defineComponent({
 
     const parseTarget = ref("");
     function setTarget(textInput: string) {
-      console.log(textInput);
-      const newTarget = parseFloat(textInput);
-      if (!Number.isNaN(newTarget)) {
-        storeApi.setContrTarget(props.contrProps.controllerId, newTarget);
+      const newTargetPct = parseFloat(textInput);
+      if (!Number.isNaN(newTargetPct)) {
+        newTargetPct;
+        storeApi.setContrTarget(
+          props.contrProps.controllerId,
+          newTargetPct / 100.0
+        );
       } else {
         console.log("Error parsing new target", textInput);
       }

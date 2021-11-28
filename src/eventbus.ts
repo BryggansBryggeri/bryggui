@@ -47,7 +47,7 @@ export class Eventbus {
         }
       })().then();
 
-      const actorSub = this.client.subscribe("actor_pub.*.current_signal");
+      const actorSub = this.client.subscribe("actor.*.current_signal");
       (async () => {
         for await (const msg of actorSub) {
           const actorMsg: ActorMsg = actorMsgDec.decode(msg.data);

@@ -2,16 +2,6 @@ type Ok<O> = { tag: "Ok"; val: O };
 type Err<E> = { tag: "Err"; err: E };
 export type Result<O, E> = Ok<O> | Err<E>;
 
-export function newErr<O, E>(err: E): Result<O, E> {
-  const errInstance: Err<E> = { tag: "Err", err };
-  return errInstance;
-}
-
-export function newOk<O, E>(val: O): Result<O, E> {
-  const okInstance: Ok<O> = { tag: "Ok", val };
-  return okInstance;
-}
-
 export function match<T, O, E>(
   input: Result<O, E>,
   ok: (ok: O) => T,
@@ -25,6 +15,16 @@ export function match<T, O, E>(
     default:
       throw new Error("Unreachable");
   }
+}
+
+export function newErr<O, E>(err: E): Result<O, E> {
+  const errInstance: Err<E> = { tag: "Err", err };
+  return errInstance;
+}
+
+export function newOk<O, E>(val: O): Result<O, E> {
+  const okInstance: Ok<O> = { tag: "Ok", val };
+  return okInstance;
 }
 
 export function isErr<O, E>(input: Result<O, E>): boolean {

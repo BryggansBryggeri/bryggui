@@ -1,12 +1,15 @@
 <template>
   <div class="container mx-auto mt-4">
-    <p class="mt-2 has-text-centered">{{ id }}: {{ val }}</p>
+    <p class="mt-2 has-text-centered">
+      {{ id }}: {{ val }}
+    </p>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { StoreApi } from "@/store/api";
+import { match } from "@/models/result";
 
 export default defineComponent({
   components: {},
@@ -15,7 +18,19 @@ export default defineComponent({
   },
   setup(props) {
     const storeApi = new StoreApi();
-    const val = computed(() => storeApi.getSensorValue(props.id));
+    // const val = computed(() => storeApi.getSensorValue(props.id));
+    const val = computed(() => {
+      const raw = storeApi.getSensorValue(props.id);
+      if (raw !== undefined) {
+        return match(
+          raw,
+          (ok) => `${ok[0]}C`,
+          (err) => `${err}`
+        );
+      } else {
+        return "Inactive";
+      }
+    });
     return { val };
   },
 });
