@@ -125,7 +125,6 @@ export default defineComponent({
     function setTarget(textInput: string) {
       const newTargetPct = parseFloat(textInput);
       if (!Number.isNaN(newTargetPct)) {
-        newTargetPct;
         storeApi.setContrTarget(
           props.contrProps.controllerId,
           newTargetPct / 100.0
