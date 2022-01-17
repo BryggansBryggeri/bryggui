@@ -1,6 +1,14 @@
 <template>
   <div class="container mx-auto mt-4">
-    <p class="mt-2 has-text-centered">{{ id }}: {{ val }}</p>
+    <div class="mt-2 has-text-centered">
+      {{ id }}
+    </div>
+    <div v-if="!dispSensor.isErr" class="mt-2 has-text-centered">
+      {{ dispSensor.val }}
+    </div>
+    <div v-else class="mt-2 has-text-centered">
+      {{ dispSensor.err }}
+    </div>
   </div>
 </template>
 
@@ -8,6 +16,7 @@
 import { computed, defineComponent } from "vue";
 import { StoreApi } from "@/store/api";
 import { match } from "@/models/result";
+import { SensorResult } from "@/models/sensor";
 
 export default defineComponent({
   components: {},
@@ -16,20 +25,33 @@ export default defineComponent({
   },
   setup(props) {
     const storeApi = new StoreApi();
-    // const val = computed(() => storeApi.getSensorValue(props.id));
-    const val = computed(() => {
-      const raw = storeApi.getSensorValue(props.id);
-      if (raw !== undefined) {
-        return match(
-          raw,
-          (ok) => `${ok[0]}C`,
-          (err) => `${err}`
-        );
-      } else {
-        return "Inactive";
-      }
+    const dispSensor = computed(() => {
+      const res = storeApi.getSensorValue(props.id);
+      return dispSensorFromApiRes(res);
     });
-    return { val };
+    return { dispSensor };
   },
 });
+
+type DispSensor = {
+  isErr: boolean;
+  val: string;
+  err: string;
+};
+
+function dispSensorFromApiRes(res: SensorResult | undefined): DispSensor {
+  if (res !== undefined) {
+    return match(
+      res,
+      (ok): DispSensor => {
+        return { isErr: false, val: `${ok[0]}C`, err: "" };
+      },
+      (err): DispSensor => {
+        return { isErr: true, val: "", err: `${err}` };
+      }
+    );
+  } else {
+    return { isErr: true, val: "", err: "Inactive" } as DispSensor;
+  }
+}
 </script>
