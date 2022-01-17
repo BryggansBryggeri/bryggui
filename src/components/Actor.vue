@@ -31,7 +31,6 @@ export default defineComponent({
       }
     });
 
-    // const valDisp = match(val, (ok) => `${ ok[0] * 100 }%`, (err) `${ err }`)
     const valDisp = val;
     return { valDisp };
   },

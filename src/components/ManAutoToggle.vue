@@ -20,7 +20,6 @@ export default defineComponent({
     disabled: { type: Boolean, required: true },
   },
   setup(props) {
-    console.log(props);
     return { props };
   },
 });

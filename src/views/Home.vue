@@ -10,6 +10,7 @@
         NatsClientStatus: {{ natsClientStatus }}
       </p>
       <controller :contr-props="mashController" />
+      <controller :contr-props="boilController" />
       <active-clients />
     </div>
   </div>

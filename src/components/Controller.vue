@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto mt-4">
     <p class="mt-2 has-text-centered" />
-    <h3>Controller</h3>
+    <h3>{{ props.contrProps.controllerId }}</h3>
     <on-off-toggle
       :state="contrActive"
       :disabled="disabled"
@@ -13,7 +13,7 @@
       @click="toggleMode"
     />
     <p>{{ props.contrProps.controllerId }}</p>
-    <p>status: {{ status }}</p>
+    <p>target: {{ status }}</p>
     <sensor :id="props.contrProps.sensorId" />
     <actor :id="props.contrProps.actorId" />
     <div class="target-input">
@@ -60,7 +60,6 @@ export default defineComponent({
       )
     );
     const status = computed(() => {
-      // storeApi.getContrValue(props.contrProps.controllerId)
       const raw = storeApi.getContrValue(props.contrProps.controllerId);
       if (raw !== undefined) {
         return match(
