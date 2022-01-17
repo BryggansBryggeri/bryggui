@@ -2,24 +2,15 @@
   <div class="container mx-auto mt-4">
     <h3>Active clients:</h3>
     <h4>Controllers</h4>
-    <li
-      v-for="contr in controllers"
-      :key="contr"
-    >
+    <li v-for="contr in controllers" :key="contr">
       {{ contr }}
     </li>
     <h4>Sensors</h4>
-    <li
-      v-for="sensor in sensors"
-      :key="sensor"
-    >
+    <li v-for="sensor in sensors" :key="sensor">
       {{ sensor }}
     </li>
     <h4>Actors</h4>
-    <li
-      v-for="actor in actors"
-      :key="actor"
-    >
+    <li v-for="actor in actors" :key="actor">
       {{ actor }}
     </li>
   </div>

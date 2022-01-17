@@ -22,7 +22,7 @@
         v-model="parseTarget"
         type="text"
         @keydown.enter="setTarget(parseTarget)"
-      >%
+      />%
     </div>
   </div>
 </template>
