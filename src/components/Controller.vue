@@ -13,7 +13,7 @@
       @click="toggleMode"
     />
     <p>{{ props.contrProps.controllerId }}</p>
-    <p>target: {{ status }}</p>
+    <p>target: {{ target }}</p>
     <sensor :id="props.contrProps.sensorId" />
     <actor :id="props.contrProps.actorId" />
     <div class="target-input">
@@ -22,13 +22,13 @@
         v-model="parseTarget"
         type="text"
         @keydown.enter="setTarget(parseTarget)"
-      />%
+      />{{unit}}
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, computed, ComputedRef, defineComponent, PropType } from "vue";
+import { ref, computed, ComputedRef, defineComponent, PropType, isProxy, toRaw } from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps, ContrStatus } from "@/models/controller";
 import { Mode, typeFromMode } from "@/models/controller";
@@ -39,10 +39,33 @@ import OnOffToggle from "@/components/OnOffToggle.vue";
 import ManAutoToggle from "@/components/ManAutoToggle.vue";
 
 function dispContr(status: ContrStatus): string {
-  if (status.mode == Mode.Man) {
-    return `${status.target * 100}%`;
+  const unit = contrUnit(status.mode);
+  if (status.mode === Mode.Man) {
+    return `${status.target * 100}${unit}`;
   } else {
-    return `${status.target}C`;
+    return `${status.target}${unit}`;
+  }
+}
+
+function contrUnit(mode: Mode): string {
+  let rawData = mode;
+  if(isProxy(mode)){
+    rawData = toRaw(mode)
+  }
+  console.log("Mode", rawData);
+  if (rawData === Mode.Man) {
+    return "%";
+  } else {
+    return "C";
+  }
+}
+
+function parseTargetString(textInput: string, mode: Mode): number {
+  const newTarget = parseFloat(textInput);
+  if (mode === Mode.Man) {
+    return newTarget / 100.0;
+  } else {
+    return newTarget;
   }
 }
 
@@ -59,7 +82,7 @@ export default defineComponent({
         props.contrProps.controllerId
       )
     );
-    const status = computed(() => {
+    const target = computed(() => {
       const raw = storeApi.getContrValue(props.contrProps.controllerId);
       if (raw !== undefined) {
         return match(
@@ -84,6 +107,8 @@ export default defineComponent({
         );
       }
     });
+
+    const unit = computed(() => {return contrUnit(contrMode)});
 
     function toggleContr() {
       if (!disabled.value) {
@@ -122,11 +147,11 @@ export default defineComponent({
 
     const parseTarget = ref("");
     function setTarget(textInput: string) {
-      const newTargetPct = parseFloat(textInput);
-      if (!Number.isNaN(newTargetPct)) {
+      const newTarget = parseTargetString(textInput, contrMode);
+      if (!Number.isNaN(newTarget)) {
         storeApi.setContrTarget(
           props.contrProps.controllerId,
-          newTargetPct / 100.0
+          newTarget
         );
       } else {
         console.log("Error parsing new target", textInput);
@@ -135,7 +160,8 @@ export default defineComponent({
     }
     return {
       props,
-      status,
+      target,
+      unit,
       parseTarget,
       setTarget,
       contrActive,
