@@ -1,6 +1,10 @@
 <template>
   <div class="h-screen flex flex-col justify-between">
-    <Navbar />
+    <Navbar >
+      <slot>
+        Connection Status: {{ natsClientStatus }}
+      </slot>
+    </Navbar>
   <div class="bg-base-100">
   </div>
      <router-view />
@@ -9,27 +13,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import { eventbus } from "@/eventbus";
+import { StoreApi } from "@/store/api";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 
 export default defineComponent({
-  components: { Navbar, Footer },
-
+  components: { Navbar, Footer, },
   setup() {
     eventbus.start();
-    return {};
+    const storeApi = new StoreApi();
+    const loading = computed(() => storeApi.isLoading());
+    const natsClientStatus = computed(() => storeApi.getNatsClientStatus());
+    onMounted(() => {
+      storeApi.fauxLoading();
+    });
+    return { loading, natsClientStatus};
   },
 });
 
 </script>
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core';
-import { usePreferredColorScheme } from '@vueuse/core'
-
-const isDark = useDark();
-const toggleDark = useToggle(isDark);
-const colorScheme = usePreferredColorScheme()
 
 </script>

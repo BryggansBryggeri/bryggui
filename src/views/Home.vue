@@ -1,12 +1,10 @@
 <template>
   <div class="flex flex-col justify-between h-screen">
     <div v-if="loading">
-      <h3 class="mt-4 has-text-centered">Loading...</h3>
+      <h3 class="">Loading...</h3>
     </div>
-    <div v-else>
-      <p class="mt-2 has-text-centered">
-        NatsClientStatus: {{ natsClientStatus }}
-      </p>
+    <div v-else class="flex flex-row justify-between">
+    
       <controller :contr-props="mashController" />
       <controller :contr-props="boilController" />
       <active-clients />
@@ -20,6 +18,8 @@ import { StoreApi } from "@/store/api";
 import { ControllerProps } from "@/models/controller";
 import Controller from "@/components/Controller.vue";
 import ActiveClients from "@/components/ActiveClients.vue";
+import { useStorage, useToggle } from "@vueuse/core";
+
 
 const mashController: ControllerProps = {
   controllerId: "mash_controller",
@@ -48,4 +48,3 @@ export default defineComponent({
   },
 });
 </script>
-

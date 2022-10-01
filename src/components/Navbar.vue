@@ -1,29 +1,70 @@
 <template>
-<div class="bg-red-200 flex flex-row justify-between p-6 mt-2 mb-5">
-  <div class="">
+  <div class="bg-base-300 flex flex-row justify-between p-6 mb-5">
+    <div class="">
       <p>BryggIO/UI</p>
+    </div>
+    <div class=""></div>
+    <div class="">
+      <slot> </slot>
+    </div>
+    <div class="flex flex-row space-x-1">
+      <input
+        @click="toggleDark()"
+        data-toggle-theme="retro, dark"
+        data-act-class="ACTIVECLASS"
+        type="checkbox"
+        class="toggle"
+        :checked="isDark"
+      />
+    </div>
+    <span class="ml-2">{{ isDark ? "Light" : "Dark" }}</span>
   </div>
-  <div class="">
-  </div>
-  <div class="">
-      Connection Status
-  </div>
-<button data-toggle-theme="retro, dark" data-act-class="ACTIVECLASS">Toggle</button>
-</div>
-
 </template>
 
 <script lang="ts">
-
-
-import { onMounted } from 'vue'
-import { themeChange } from 'theme-change'
+import { onMounted } from "vue";
+import { themeChange } from "theme-change";
+import { useStorage, useToggle, useDark } from "@vueuse/core";
 
 export default {
   setup() {
+    const isDark = useDark();
+    const toggleDark = useToggle(isDark);
+    const [modeSwitcher, toggle] = useToggle();
     onMounted(() => {
-      themeChange(false)
-    })
+      themeChange(false);
+    });
+    return { modeSwitcher, toggle, isDark, toggleDark };
   },
-}
+};
 </script>
+
+<!-- 
+
+      <svg
+        class="w-5 h-5"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+        ></path>
+      </svg>
+
+
+      <svg
+        class="w-5 h-5"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+        ></path>
+      </svg>
+
+
+-->
