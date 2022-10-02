@@ -1,14 +1,8 @@
 <template>
-<div class="bg-red-500 p-5 w-full">
-  <div class="">
-      <p>BryggIO/UI</p>
-  </div>
-  <div class="">
-  </div>
-  <div class="">
-      Connection Status
-  </div>
-</div>
+<footer class="bg-base-300 p-4">
+    <span class="text-sm text-accent sm:text-center dark:text-gray-400">© 2022 <a href="https://github.com/bryggansbryggeri/" class="hover:underline">Bryggans Bryggeri</a>
+    </span>
+</footer>
 
 </template>
 

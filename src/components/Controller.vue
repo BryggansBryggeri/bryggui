@@ -1,6 +1,5 @@
 <template>
-  <div class="container mx-auto mt-4">
-    <p class="mt-2 has-text-centered" />
+  <div class="flex flex-col w-full bg-base-200 rounded-lg px-4 py-5">
     <h3>{{ props.contrProps.controllerId }}</h3>
     <on-off-toggle
       :state="contrActive"
