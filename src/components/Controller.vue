@@ -1,33 +1,53 @@
 <template>
-  <div class="flex flex-col w-full bg-base-200 rounded-lg px-4 py-5">
-    <h3>{{ props.contrProps.controllerId }}</h3>
-    <on-off-toggle
-      :state="contrActive"
-      :disabled="disabled"
-      @click="toggleContr"
-    />
-    <man-auto-toggle
-      :mode="contrMode"
-      :disabled="disabled"
-      @click="toggleMode"
-    />
-    <p>{{ props.contrProps.controllerId }}</p>
-    <p>target: {{ target }}</p>
-    <sensor :id="props.contrProps.sensorId" />
-    <actor :id="props.contrProps.actorId" />
-    <div class="target-input">
-      Set target:
-      <input
-        v-model="parseTarget"
-        type="text"
-        @keydown.enter="setTarget(parseTarget)"
-      />{{unit}}
+  <div class="flex flex-col w-full bg-base-200 rounded-lg space-y-6 px-4 py-5">
+    <div class="flex flex-col rounded-lg bg-base-300 p-4 space-y-1">
+      <div class="divider">Name</div>
+      <div class="flex flex-row justify-between rounded-lg mb-2">
+      </div>
+      <div class="flex flex-row justify-between rounded-lg">
+        <h3>{{ props.contrProps.controllerId }}</h3>
+        <on-off-toggle
+          :state="contrActive"
+          :disabled="disabled"
+          @click="toggleContr"
+        />
+      </div>
+      <div class="divider">Controll type</div>
+      <man-auto-toggle
+        :mode="contrMode"
+        :disabled="disabled"
+        @click="toggleMode"
+      />
+    </div>
+
+    <div class="bg-base-300 rounded-lg p-4"></div>
+    <div class="bg-base-300 rounded-lg p-4">
+      <p>{{ props.contrProps.controllerId }}</p>
+      <p>Target: {{ target }}</p>
+      <sensor :id="props.contrProps.sensorId" />
+      <actor :id="props.contrProps.actorId" />
+      <div class="target-input">
+        Set target:
+        <input
+          v-model="parseTarget"
+          type="text"
+          @keydown.enter="setTarget(parseTarget)"
+        />{{ unit }}
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, computed, ComputedRef, defineComponent, PropType, isProxy, toRaw } from "vue";
+import {
+  ref,
+  computed,
+  ComputedRef,
+  defineComponent,
+  PropType,
+  isProxy,
+  toRaw,
+} from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps, ContrStatus } from "@/models/controller";
 import { Mode, typeFromMode } from "@/models/controller";
@@ -48,8 +68,8 @@ function dispContr(status: ContrStatus): string {
 
 function contrUnit(mode: Mode): string {
   let rawData = mode;
-  if(isProxy(mode)){
-    rawData = toRaw(mode)
+  if (isProxy(mode)) {
+    rawData = toRaw(mode);
   }
   console.log("Mode", rawData);
   if (rawData === Mode.Man) {
@@ -107,7 +127,9 @@ export default defineComponent({
       }
     });
 
-    const unit = computed(() => {return contrUnit(contrMode)});
+    const unit = computed(() => {
+      return contrUnit(contrMode);
+    });
 
     function toggleContr() {
       if (!disabled.value) {
@@ -148,10 +170,7 @@ export default defineComponent({
     function setTarget(textInput: string) {
       const newTarget = parseTargetString(textInput, contrMode);
       if (!Number.isNaN(newTarget)) {
-        storeApi.setContrTarget(
-          props.contrProps.controllerId,
-          newTarget
-        );
+        storeApi.setContrTarget(props.contrProps.controllerId, newTarget);
       } else {
         console.log("Error parsing new target", textInput);
       }
