@@ -19,9 +19,8 @@
         @click="toggleMode"
       />
     </div>
-
-    <div class="bg-base-300 rounded-lg p-4"></div>
     <div class="bg-base-300 rounded-lg p-4">
+      <div class="divider">Settings</div>
       <p>{{ props.contrProps.controllerId }}</p>
       <p>Target: {{ target }}</p>
       <sensor :id="props.contrProps.sensorId" />
@@ -71,7 +70,6 @@ function contrUnit(mode: Mode): string {
   if (isProxy(mode)) {
     rawData = toRaw(mode);
   }
-  console.log("Mode", rawData);
   if (rawData === Mode.Man) {
     return "%";
   } else {
