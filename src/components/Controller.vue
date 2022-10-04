@@ -1,37 +1,61 @@
 <template>
-  <div class="flex flex-col w-full bg-base-200 rounded-lg space-y-6 px-4 py-5">
-    <div class="flex flex-col rounded-lg bg-base-300 p-4 space-y-1">
+  <div class="flex flex-col w-full rounded-lg px-4 py-5">
+    <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
       <div class="divider">Name</div>
-      <div class="flex flex-row justify-between rounded-lg mb-2">
-      </div>
       <div class="flex flex-row justify-between rounded-lg">
-        <h3>{{ props.contrProps.controllerId }}</h3>
+        <h3 class="capitalize font-bold">
+          {{ prettify(props.contrProps.controllerId) }}
+        </h3>
         <on-off-toggle
           :state="contrActive"
           :disabled="disabled"
           @click="toggleContr"
         />
       </div>
-      <div class="divider">Controll type</div>
+      <div class="flex flex-row justify-center space-x-2">
+        <sensor :id="props.contrProps.sensorId" />
+        <actor :id="props.contrProps.actorId" />
+        <div
+          class="
+            flex
+            bg-base-300
+            px-3
+            py-2
+            rounded-lg
+            flex-col flex-none
+            text-sm
+            w-1/3
+          "
+        >
+          <p>Target:</p>
+          <p
+            class="
+              flex
+              text-mono
+              justify-end
+              place-self-end
+              text-accent text-lg
+            "
+          >
+            {{ target }}
+          </p>
+        </div>
+      </div>
+      <div class="divider">Controller type</div>
       <man-auto-toggle
         :mode="contrMode"
         :disabled="disabled"
-        @click="toggleMode"
+        @toggleEvent="toggleMode"
       />
-    </div>
-    <div class="bg-base-300 rounded-lg p-4">
-      <div class="divider">Settings</div>
-      <p>{{ props.contrProps.controllerId }}</p>
-      <p>Target: {{ target }}</p>
-      <sensor :id="props.contrProps.sensorId" />
-      <actor :id="props.contrProps.actorId" />
-      <div class="target-input">
-        Set target:
+      <div class="flex flex-row justify-between align-center">
+        <h3>Set target:</h3>
         <input
-          v-model="parseTarget"
           type="text"
+          :placeholder="parseTarget"
+          v-model="parseTarget"
           @keydown.enter="setTarget(parseTarget)"
-        />{{ unit }}
+          class="input input-bordered input-primary w-full max-w-xs"
+        />
       </div>
     </div>
   </div>
@@ -73,7 +97,7 @@ function contrUnit(mode: Mode): string {
   if (rawData === Mode.Man) {
     return "%";
   } else {
-    return "C";
+    return "°C";
   }
 }
 
@@ -174,6 +198,9 @@ export default defineComponent({
       }
       parseTarget.value = "";
     }
+    function prettify(input: string): string {
+      return input.replace("_", " ");
+    }
     return {
       props,
       target,
@@ -185,6 +212,7 @@ export default defineComponent({
       disabled,
       toggleContr,
       toggleMode,
+      prettify,
     };
   },
 });

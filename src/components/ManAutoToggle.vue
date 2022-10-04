@@ -1,46 +1,41 @@
 <template>
-  <div>
-    <div class="h-6">
-
-    
+  <div class="place-self-center">
     <div class="btn-group">
       <button
-        :class="{ 'btn-active': getMode() == 'manual' }"
-        class="btn btn-sm"
-        :disabled="props.disabled || getMode() == 'manual'"
+        :class="{ 'btn-primary': getMode(mode) == 'manual' }"
+        class="btn btn-outline btn-sm"
+        :disabled="props.disabled || getMode(mode) == 'manual'"
+        @click="$emit('toggleEvent')"
       >
         Manual
       </button>
       <button
-        :class="{ 'btn-active': getMode() == 'auto' }"
-        class="btn btn-sm"
-        :disabled="props.disabled"
+        :class="{ 'btn-primary': getMode(props.mode) == 'auto'  }"
+        class="btn btn-outline btn-sm"
+        :disabled="props.disabled || getMode(mode) == 'auto'"
+        @click="$emit('toggleEvent')"
       >
         Temperature
       </button>
     </div>
     </div>
-    <button>
-      <p v-if="props.disabled">disabled</p>
-      <p v-else>
-        {{ getMode() }}
-      </p>
-    </button>
-  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, onMounted, PropType } from "vue";
 import { Mode } from "@/models/controller";
 
-function getMode(): string {
-  if(Mode.Man){
+function getMode(input: any): string {
+  if(input == "Manual"){
     return "manual"
-  }else if (Mode.Auto){
+    console.log("getMode ran returned Manual" )
+  }else if (input == "Auto"){
     return "auto"
+    console.log("getMode ran returned Auto" )
   }
   else{
     return ""
+    console.log("getMode ran returned nothing" )
   }
 }
 
