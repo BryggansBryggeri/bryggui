@@ -1,12 +1,29 @@
 <template>
-  <div class="flex bg-base-300 px-3 py-2 rounded-lg flex-col flex-none text-sm w-1/3 ">
+  <div
+    class="
+      flex
+      bg-base-300
+      px-3
+      py-2
+      rounded-lg
+      flex-col flex-none
+      text-sm
+      w-1/3
+    "
+  >
     <div class="capitalize">
       {{ prettify(id) }}
     </div>
-    <div v-if="!dispActor.isErr" class="flex text-mono justify-end text-accent text-lg">
+    <div
+      v-if="!dispActor.isErr"
+      class="flex text-mono justify-end text-accent text-lg"
+    >
       {{ dispActor.val }}
     </div>
-    <div v-else class="flex text-mono justify-end text-accent text-lg">
+    <div
+      v-else
+      class="flex text-mono justify-end text-accent text-lg"
+    >
       {{ dispActor.err }}
     </div>
   </div>
@@ -57,6 +74,6 @@ function dispActorFromApiRes(res: ActorResult | undefined): DispActor {
 }
 
 function prettify(input: string): string {
-  return input.replace("_", " ");;
+  return input.replace("_", " ");
 }
 </script>

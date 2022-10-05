@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col w-full rounded-lg px-4 py-5">
     <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
-      <div class="divider">Name</div>
+      <div class="divider">
+        Name
+      </div>
       <div class="flex flex-row justify-between rounded-lg">
         <h3 class="capitalize font-bold">
           {{ prettify(props.contrProps.controllerId) }}
@@ -41,7 +43,9 @@
           </p>
         </div>
       </div>
-      <div class="divider">Controller type</div>
+      <div class="divider">
+        Controller type
+      </div>
       <man-auto-toggle
         :mode="contrMode"
         :disabled="disabled"
@@ -50,12 +54,12 @@
       <div class="flex flex-row justify-between align-center">
         <h3>Set target:</h3>
         <input
+          v-model="parseTarget"
           type="text"
           :placeholder="parseTarget"
-          v-model="parseTarget"
-          @keydown.enter="setTarget(parseTarget)"
           class="input input-bordered input-primary w-full max-w-xs"
-        />
+          @keydown.enter="setTarget(parseTarget)"
+        >
       </div>
     </div>
   </div>
