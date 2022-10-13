@@ -53,7 +53,7 @@ export default defineComponent({
 
 type DispSensor = {
   isErr: boolean;
-  val: string;
+  val: number;
   err: string;
 };
 
@@ -62,14 +62,15 @@ function dispSensorFromApiRes(res: MeasResult | undefined): DispSensor {
     return match(
       res,
       (ok): DispSensor => {
-        return { isErr: false, val: `${usePrecision(ok[0], 1)}`, err: "" };
+        const meas = usePrecision(ok[0], 1);
+        return { isErr: false, val: meas, err: "" };
       },
       (err): DispSensor => {
-        return { isErr: true, val: "", err: `${err}` };
+        return { isErr: true, val: 0, err: `${err}` };
       }
     );
   } else {
-    return { isErr: true, val: "", err: "Inactive" } as DispSensor;
+    return { isErr: true, val: 0, err: "Inactive" } as DispSensor;
   }
 }
 
