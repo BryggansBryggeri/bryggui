@@ -27,14 +27,14 @@ import { Mode } from "@/models/controller";
 
 function getMode(input: Mode): string {
   if (input == "manual") {
-    return "manual";
     console.log("getMode ran returned Manual");
+    return "manual";
   } else if (input == "Auto") {
-    return "auto";
     console.log("getMode ran returned Auto");
+    return "auto";
   } else {
-    return "";
     console.log("getMode ran returned nothing");
+    return "";
   }
 }
 

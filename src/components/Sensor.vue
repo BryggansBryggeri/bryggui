@@ -33,7 +33,7 @@
 import { computed, defineComponent } from "vue";
 import { StoreApi } from "@/store/api";
 import { match } from "@/models/result";
-import { SensorResult } from "@/models/sensor";
+import { MeasResult } from "@/models/sensor";
 import { usePrecision } from "@vueuse/math";
 
 export default defineComponent({
@@ -57,13 +57,13 @@ type DispSensor = {
   err: string;
 };
 
-function dispSensorFromApiRes(res: SensorResult | undefined): DispSensor {
+function dispSensorFromApiRes(res: MeasResult | undefined): DispSensor {
   if (res !== undefined) {
     return match(
       res,
       (ok): DispSensor => {
-        return { isErr: false, val: usePrecision(ok[0], 1), err: "" };
-      }, // Question: Is it stupid to make this calculation in the frontend?
+        return { isErr: false, val: `${usePrecision(ok[0], 1)}`, err: "" };
+      },
       (err): DispSensor => {
         return { isErr: true, val: "", err: `${err}` };
       }
