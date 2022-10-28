@@ -126,11 +126,11 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from "vue";
+import { onMounted, defineComponent } from "vue";
 import { themeChange } from "theme-change";
 import { useToggle, useDark } from "@vueuse/core";
 
-export default {
+export default defineComponent({
   setup() {
     const isDark = useDark();
     const toggleDark = useToggle(isDark);
@@ -140,5 +140,5 @@ export default {
     });
     return { modeSwitcher, toggle, isDark, toggleDark };
   },
-};
+});
 </script>
