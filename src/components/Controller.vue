@@ -31,7 +31,7 @@
         >
           <p>Target:</p>
           <p
-            class="
+            class=" 
               flex
               text-mono
               justify-end
@@ -46,7 +46,7 @@
       <div class="divider">
         Controller type
       </div>
-      <man-auto-toggle
+      <ModeToggle
         :mode="contrMode"
         :disabled="disabled"
         @toggleEvent="toggleMode"
@@ -82,7 +82,7 @@ import { match } from "@/models/result";
 import Sensor from "@/components/Sensor.vue";
 import Actor from "@/components/Actor.vue";
 import OnOffToggle from "@/components/OnOffToggle.vue";
-import ManAutoToggle from "@/components/ManAutoToggle.vue";
+import ModeToggle from "@/components/ModeToggle.vue";
 
 function dispContr(status: ContrStatus): string {
   const unit = contrUnit(status.mode);
@@ -115,7 +115,7 @@ function parseTargetString(textInput: string, mode: Mode): number {
 }
 
 export default defineComponent({
-  components: { Sensor, Actor, OnOffToggle, ManAutoToggle },
+  components: { Sensor, Actor, OnOffToggle, ModeToggle },
   props: {
     contrProps: { type: Object as PropType<ControllerProps>, required: true },
   },
@@ -171,7 +171,7 @@ export default defineComponent({
       }
     }
 
-    function toggleMode() {
+    function toggleMode(wishedFor: number) {
       if (!disabled.value) {
         disabled.value = true;
         // TODO: Not sure if this destroys reactivity.
@@ -179,6 +179,14 @@ export default defineComponent({
           {},
           props.contrProps
         );
+        if(wishedFor == 1){
+          console.log("I want to switch to Power Mode")
+        }
+        else if(wishedFor == 2){
+          console.log("I want to switch to Temperature mode")
+        }else if(wishedFor == 3){
+          console.log("I want to switch to recipe mode")
+        }
         if (contrMode.value.valueOf() == Mode.Man.valueOf()) {
           newContrProps.type = typeFromMode(Mode.Auto);
           storeApi.switchController(newContrProps, 0.0);

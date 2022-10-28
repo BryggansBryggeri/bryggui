@@ -2,20 +2,28 @@
   <div class="place-self-center">
     <div class="btn-group">
       <button
-        :class="{ 'btn-active btn-primary': getMode(mode) == 'manual' }"
+        :class="{ 'btn-active btn-primary': getMode(mode) == 'power' }"
         class="btn btn-outline btn-sm"
-        :disabled="props.disabled || getMode(mode) == 'manual'"
-        @click="$emit('toggleEvent')"
+        :disabled="props.disabled || getMode(mode) == 'power'"
+        @click="$emit('toggleEvent', 1)"
       >
-        Manual
+        Power
       </button>
       <button
-        :class="{ 'btn-active': getMode(props.mode) == 'auto' }"
+        :class="{ 'btn-active': getMode(props.mode) == 'temp' }"
         class="btn btn-outline btn-sm"
-        :disabled="props.disabled || getMode(mode) == 'auto'"
-        @click="$emit('toggleEvent')"
+        :disabled="props.disabled || getMode(mode) == 'temp'"
+        @click="$emit('toggleEvent', 2)"
       >
         Temperature
+      </button>
+      <button
+        :class="{ 'btn-active': getMode(props.mode) == 'recipe' }"
+        class="btn btn-outline btn-sm"
+        :disabled="props.disabled || getMode(mode) == 'recipe'"
+        @click="$emit('toggleEvent', 3)"
+      >
+       Recipe
       </button>
     </div>
   </div>
@@ -26,14 +34,11 @@ import { defineComponent, PropType } from "vue";
 import { Mode } from "@/models/controller";
 
 function getMode(input: Mode): string {
-  if (input == "manual") {
-    console.log("getMode ran returned Manual");
+  if (input === Mode.Man) {
     return "manual";
-  } else if (input == "Auto") {
-    console.log("getMode ran returned Auto");
+  } else if (input === Mode.Auto) {
     return "auto";
   } else {
-    console.log("getMode ran returned nothing");
     return "";
   }
 }
@@ -43,7 +48,10 @@ export default defineComponent({
     mode: { type: String as PropType<Mode>, required: true },
     disabled: { type: Boolean, required: true },
   },
-  emits: ["toggleEvent"],
+  emits: [
+    "toggleEvent" 
+
+],
   setup(props) {
     return { props, getMode };
   },
