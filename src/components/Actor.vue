@@ -20,10 +20,7 @@
     >
       {{ dispActor.val }}
     </div>
-    <div
-      v-else
-      class="flex text-mono justify-end text-accent text-lg"
-    >
+    <div v-else class="flex text-mono justify-end text-accent text-lg">
       {{ dispActor.err }}
     </div>
   </div>

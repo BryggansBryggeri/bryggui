@@ -20,10 +20,7 @@
     >
       {{ dispSensor.val }}°C
     </div>
-    <div
-      v-else
-      class="flex text-mono justify-end text-accent text-lg"
-    >
+    <div v-else class="flex text-mono justify-end text-accent text-lg">
       {{ dispSensor.err }}
     </div>
   </div>

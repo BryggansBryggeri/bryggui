@@ -23,7 +23,7 @@
         :disabled="props.disabled || getMode(mode) == 'recipe'"
         @click="$emit('toggleEvent', 3)"
       >
-       Recipe
+        Recipe
       </button>
     </div>
   </div>
@@ -48,10 +48,7 @@ export default defineComponent({
     mode: { type: String as PropType<Mode>, required: true },
     disabled: { type: Boolean, required: true },
   },
-  emits: [
-    "toggleEvent" 
-
-],
+  emits: ["toggleEvent"],
   setup(props) {
     return { props, getMode };
   },

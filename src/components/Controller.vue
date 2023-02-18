@@ -1,9 +1,7 @@
 <template>
   <div class="flex flex-col w-full rounded-lg px-4 py-5">
     <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
-      <div class="divider">
-        Name
-      </div>
+      <div class="divider">Name</div>
       <div class="flex flex-row justify-between rounded-lg">
         <h3 class="capitalize font-bold">
           {{ prettify(props.contrProps.controllerId) }}
@@ -31,7 +29,7 @@
         >
           <p>Target:</p>
           <p
-            class=" 
+            class="
               flex
               text-mono
               justify-end
@@ -43,9 +41,7 @@
           </p>
         </div>
       </div>
-      <div class="divider">
-        Controller type
-      </div>
+      <div class="divider">Controller type</div>
       <ModeToggle
         :mode="contrMode"
         :disabled="disabled"
@@ -59,7 +55,7 @@
           :placeholder="parseTarget"
           class="input input-bordered input-primary w-full max-w-xs"
           @keydown.enter="setTarget(parseTarget)"
-        >
+        />
       </div>
     </div>
   </div>
@@ -179,13 +175,12 @@ export default defineComponent({
           {},
           props.contrProps
         );
-        if(wishedFor == 1){
-          console.log("I want to switch to Power Mode")
-        }
-        else if(wishedFor == 2){
-          console.log("I want to switch to Temperature mode")
-        }else if(wishedFor == 3){
-          console.log("I want to switch to recipe mode")
+        if (wishedFor == 1) {
+          console.log("I want to switch to Power Mode");
+        } else if (wishedFor == 2) {
+          console.log("I want to switch to Temperature mode");
+        } else if (wishedFor == 3) {
+          console.log("I want to switch to recipe mode");
         }
         if (contrMode.value.valueOf() == Mode.Man.valueOf()) {
           newContrProps.type = typeFromMode(Mode.Auto);
