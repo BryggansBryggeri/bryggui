@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-4">
+  <div class="flex flex-col w-full">
     <h3>Active clients:</h3>
     <h4>Controllers</h4>
     <li v-for="contr in controllers" :key="contr">

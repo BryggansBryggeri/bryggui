@@ -1,12 +1,26 @@
 <template>
-  <div class="container mx-auto mt-4">
-    <div class="mt-2 has-text-centered">
-      {{ id }}
+  <div
+    class="
+      flex
+      bg-base-300
+      px-3
+      py-2
+      rounded-lg
+      flex-col flex-none
+      text-sm
+      w-1/3
+    "
+  >
+    <div class="capitalize">
+      {{ prettify(id) }}
     </div>
-    <div v-if="!dispActor.isErr" class="mt-2 has-text-centered">
+    <div
+      v-if="!dispActor.isErr"
+      class="flex text-mono justify-end text-accent text-lg"
+    >
       {{ dispActor.val }}
     </div>
-    <div v-else class="mt-2 has-text-centered">
+    <div v-else class="flex text-mono justify-end text-accent text-lg">
       {{ dispActor.err }}
     </div>
   </div>
@@ -30,7 +44,7 @@ export default defineComponent({
       return dispActorFromApiRes(res);
     });
 
-    return { dispActor };
+    return { dispActor, prettify };
   },
 });
 
@@ -54,5 +68,9 @@ function dispActorFromApiRes(res: ActorResult | undefined): DispActor {
   } else {
     return { isErr: true, val: "", err: "Inactive" } as DispActor;
   }
+}
+
+function prettify(input: string): string {
+  return input.replace("_", " ");
 }
 </script>

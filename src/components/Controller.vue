@@ -1,34 +1,76 @@
 <template>
-  <div class="container mx-auto mt-4">
-    <p class="mt-2 has-text-centered" />
-    <h3>{{ props.contrProps.controllerId }}</h3>
-    <on-off-toggle
-      :state="contrActive"
-      :disabled="disabled"
-      @click="toggleContr"
-    />
-    <man-auto-toggle
-      :mode="contrMode"
-      :disabled="disabled"
-      @click="toggleMode"
-    />
-    <p>{{ props.contrProps.controllerId }}</p>
-    <p>target: {{ target }}</p>
-    <sensor :id="props.contrProps.sensorId" />
-    <actor :id="props.contrProps.actorId" />
-    <div class="target-input">
-      Set target:
-      <input
-        v-model="parseTarget"
-        type="text"
-        @keydown.enter="setTarget(parseTarget)"
-      />{{unit}}
+  <div class="flex flex-col w-full rounded-lg px-4 py-5">
+    <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
+      <div class="divider">Name</div>
+      <div class="flex flex-row justify-between rounded-lg">
+        <h3 class="capitalize font-bold">
+          {{ prettify(props.contrProps.controllerId) }}
+        </h3>
+        <on-off-toggle
+          :state="contrActive"
+          :disabled="disabled"
+          @click="toggleContr"
+        />
+      </div>
+      <div class="flex flex-row justify-center space-x-2">
+        <sensor :id="props.contrProps.sensorId" />
+        <actor :id="props.contrProps.actorId" />
+        <div
+          class="
+            flex
+            bg-base-300
+            px-3
+            py-2
+            rounded-lg
+            flex-col flex-none
+            text-sm
+            w-1/3
+          "
+        >
+          <p>Target:</p>
+          <p
+            class="
+              flex
+              text-mono
+              justify-end
+              place-self-end
+              text-accent text-lg
+            "
+          >
+            {{ target }}
+          </p>
+        </div>
+      </div>
+      <div class="divider">Controller type</div>
+      <ModeToggle
+        :mode="contrMode"
+        :disabled="disabled"
+        @toggleEvent="toggleMode"
+      />
+      <div class="flex flex-row justify-between align-center">
+        <h3>Set target:</h3>
+        <input
+          v-model="parseTarget"
+          type="text"
+          :placeholder="parseTarget"
+          class="input input-bordered input-primary w-full max-w-xs"
+          @keydown.enter="setTarget(parseTarget)"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, computed, ComputedRef, defineComponent, PropType, isProxy, toRaw } from "vue";
+import {
+  ref,
+  computed,
+  ComputedRef,
+  defineComponent,
+  PropType,
+  isProxy,
+  toRaw,
+} from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps, ContrStatus } from "@/models/controller";
 import { Mode, typeFromMode } from "@/models/controller";
@@ -36,7 +78,7 @@ import { match } from "@/models/result";
 import Sensor from "@/components/Sensor.vue";
 import Actor from "@/components/Actor.vue";
 import OnOffToggle from "@/components/OnOffToggle.vue";
-import ManAutoToggle from "@/components/ManAutoToggle.vue";
+import ModeToggle from "@/components/ModeToggle.vue";
 
 function dispContr(status: ContrStatus): string {
   const unit = contrUnit(status.mode);
@@ -49,14 +91,13 @@ function dispContr(status: ContrStatus): string {
 
 function contrUnit(mode: Mode): string {
   let rawData = mode;
-  if(isProxy(mode)){
-    rawData = toRaw(mode)
+  if (isProxy(mode)) {
+    rawData = toRaw(mode);
   }
-  console.log("Mode", rawData);
   if (rawData === Mode.Man) {
     return "%";
   } else {
-    return "C";
+    return "°C";
   }
 }
 
@@ -70,7 +111,7 @@ function parseTargetString(textInput: string, mode: Mode): number {
 }
 
 export default defineComponent({
-  components: { Sensor, Actor, OnOffToggle, ManAutoToggle },
+  components: { Sensor, Actor, OnOffToggle, ModeToggle },
   props: {
     contrProps: { type: Object as PropType<ControllerProps>, required: true },
   },
@@ -108,7 +149,9 @@ export default defineComponent({
       }
     });
 
-    const unit = computed(() => {return contrUnit(contrMode)});
+    const unit = computed(() => {
+      return contrUnit(contrMode);
+    });
 
     function toggleContr() {
       if (!disabled.value) {
@@ -124,7 +167,7 @@ export default defineComponent({
       }
     }
 
-    function toggleMode() {
+    function toggleMode(wishedFor: number) {
       if (!disabled.value) {
         disabled.value = true;
         // TODO: Not sure if this destroys reactivity.
@@ -132,6 +175,13 @@ export default defineComponent({
           {},
           props.contrProps
         );
+        if (wishedFor == 1) {
+          console.log("I want to switch to Power Mode");
+        } else if (wishedFor == 2) {
+          console.log("I want to switch to Temperature mode");
+        } else if (wishedFor == 3) {
+          console.log("I want to switch to recipe mode");
+        }
         if (contrMode.value.valueOf() == Mode.Man.valueOf()) {
           newContrProps.type = typeFromMode(Mode.Auto);
           storeApi.switchController(newContrProps, 0.0);
@@ -149,14 +199,14 @@ export default defineComponent({
     function setTarget(textInput: string) {
       const newTarget = parseTargetString(textInput, contrMode);
       if (!Number.isNaN(newTarget)) {
-        storeApi.setContrTarget(
-          props.contrProps.controllerId,
-          newTarget
-        );
+        storeApi.setContrTarget(props.contrProps.controllerId, newTarget);
       } else {
         console.log("Error parsing new target", textInput);
       }
       parseTarget.value = "";
+    }
+    function prettify(input: string): string {
+      return input.replace("_", " ");
     }
     return {
       props,
@@ -169,6 +219,7 @@ export default defineComponent({
       disabled,
       toggleContr,
       toggleMode,
+      prettify,
     };
   },
 });
