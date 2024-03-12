@@ -140,7 +140,7 @@ export default defineComponent({
     });
 
     const unit: ComputedRef<string> = computed(() => {
-      return contrUnit(contrMode);
+      return contrUnit(contrMode.value);
     });
 
     function toggleContr() {

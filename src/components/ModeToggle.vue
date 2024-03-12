@@ -31,7 +31,6 @@ function isActive(
   cmp: string,
   disabled: boolean
 ): boolean {
-  console.log("disabled", disabled);
   return currentMode === cmp && !disabled;
 }
 

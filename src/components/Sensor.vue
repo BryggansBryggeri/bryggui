@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, ComputedRef } from "vue";
 import { StoreApi } from "@/store/api";
 import { match } from "@/models/result";
 import { MeasResult } from "@/models/sensor";
@@ -50,7 +50,7 @@ export default defineComponent({
 
 type DispSensor = {
   isErr: boolean;
-  val: number;
+  val: number | ComputedRef<string | number>;
   err: string;
 };
 
