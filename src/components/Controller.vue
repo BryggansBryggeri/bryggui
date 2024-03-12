@@ -44,7 +44,7 @@
       <div class="divider">Controller type</div>
       <ModeToggle
         :mode="contrMode"
-        :disabled="disabled"
+        :disabled="!contrActive"
         @toggleEvent="toggleMode"
       />
       <div class="flex flex-row justify-between align-center">
@@ -159,8 +159,7 @@ export default defineComponent({
 
     function toggleMode(wishedFor: number) {
       if (!disabled.value) {
-        disabled.value = true;
-        // TODO: Not sure if this destroys reactivity.
+        disabled.value = true; // TODO: Not sure if this destroys reactivity.
         let newMode = wishedFor == 1 ? Mode.Man : Mode.Auto;
 
         // If toggling to the current mode, do nothing.

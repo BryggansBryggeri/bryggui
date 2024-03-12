@@ -2,17 +2,17 @@
   <div class="place-self-center">
     <div class="btn-group">
       <button
-        :class="{ 'btn-active btn-primary': getMode(mode) == 'power' }"
+        :class="{ 'btn-active': isActive(mode, 'Manual', disabled) }"
         class="btn btn-outline btn-sm"
-        :disabled="props.disabled || getMode(mode) == 'power'"
+        :disabled="props.disabled"
         @click="$emit('toggleEvent', 1)"
       >
         Manual
       </button>
       <button
-        :class="{ 'btn-active': getMode(props.mode) == 'temp' }"
+        :class="{ 'btn-active': isActive(mode, 'Auto', disabled) }"
         class="btn btn-outline btn-sm"
-        :disabled="props.disabled || getMode(mode) == 'temp'"
+        :disabled="props.disabled"
         @click="$emit('toggleEvent', 2)"
       >
         Auto
@@ -25,14 +25,14 @@
 import { defineComponent, PropType } from "vue";
 import { Mode } from "@/models/controller";
 
-function getMode(input: Mode): string {
-  if (input === Mode.Man) {
-    return "manual";
-  } else if (input === Mode.Auto) {
-    return "auto";
-  } else {
-    return "";
-  }
+// TODO: Figure out if this comp. can have Mode as a prop.
+function isActive(
+  currentMode: string,
+  cmp: string,
+  disabled: boolean
+): boolean {
+  console.log("disabled", disabled);
+  return currentMode === cmp && !disabled;
 }
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
   },
   emits: ["toggleEvent"],
   setup(props) {
-    return { props, getMode };
+    return { props, isActive };
   },
 });
 </script>
