@@ -54,23 +54,17 @@
           type="text"
           :placeholder="parseTarget"
           class="input input-bordered input-primary w-full max-w-xs"
-          @keydown.enter="setTarget(parseTarget)"
+          @keydown.enter="setTarget(parseTarget, contrMode)"
         />
+        <!-- I can't seem to make the unit reactive-->
+        <!-- <h3>{{unit}}</h3> -->
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  ref,
-  computed,
-  ComputedRef,
-  defineComponent,
-  PropType,
-  isProxy,
-  toRaw,
-} from "vue";
+import { ref, computed, ComputedRef, defineComponent, PropType } from "vue";
 import { StoreApi } from "@/store/api";
 import type { ControllerProps, ContrStatus } from "@/models/controller";
 import { Mode, typeFromMode } from "@/models/controller";
@@ -90,11 +84,7 @@ function dispContr(status: ContrStatus): string {
 }
 
 function contrUnit(mode: Mode): string {
-  let rawData = mode;
-  if (isProxy(mode)) {
-    rawData = toRaw(mode);
-  }
-  if (rawData === Mode.Man) {
+  if (mode === Mode.Man) {
     return "%";
   } else {
     return "°C";
@@ -149,7 +139,7 @@ export default defineComponent({
       }
     });
 
-    const unit = computed(() => {
+    const unit: ComputedRef<string> = computed(() => {
       return contrUnit(contrMode);
     });
 
@@ -196,8 +186,8 @@ export default defineComponent({
     }
 
     const parseTarget = ref("");
-    function setTarget(textInput: string) {
-      const newTarget = parseTargetString(textInput, contrMode);
+    function setTarget(textInput: string, mode: Mode) {
+      const newTarget = parseTargetString(textInput, mode);
       if (!Number.isNaN(newTarget)) {
         storeApi.setContrTarget(props.contrProps.controllerId, newTarget);
       } else {
@@ -205,9 +195,11 @@ export default defineComponent({
       }
       parseTarget.value = "";
     }
+
     function prettify(input: string): string {
       return input.replace("_", " ");
     }
+
     return {
       props,
       target,
