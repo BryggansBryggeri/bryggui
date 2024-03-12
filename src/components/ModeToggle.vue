@@ -7,7 +7,7 @@
         :disabled="props.disabled || getMode(mode) == 'power'"
         @click="$emit('toggleEvent', 1)"
       >
-        Power
+        Manual
       </button>
       <button
         :class="{ 'btn-active': getMode(props.mode) == 'temp' }"
@@ -15,15 +15,7 @@
         :disabled="props.disabled || getMode(mode) == 'temp'"
         @click="$emit('toggleEvent', 2)"
       >
-        Temperature
-      </button>
-      <button
-        :class="{ 'btn-active': getMode(props.mode) == 'recipe' }"
-        class="btn btn-outline btn-sm"
-        :disabled="props.disabled || getMode(mode) == 'recipe'"
-        @click="$emit('toggleEvent', 3)"
-      >
-        Recipe
+        Auto
       </button>
     </div>
   </div>

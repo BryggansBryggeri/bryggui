@@ -161,18 +161,19 @@ export default defineComponent({
       if (!disabled.value) {
         disabled.value = true;
         // TODO: Not sure if this destroys reactivity.
+        let newMode = wishedFor == 1 ? Mode.Man : Mode.Auto;
+
+        // If toggling to the current mode, do nothing.
+        if (newMode === contrMode.value.valueOf()) {
+          disabled.value = false;
+          return;
+        }
+
         let newContrProps: ControllerProps = Object.assign(
           {},
           props.contrProps
         );
-        if (wishedFor == 1) {
-          console.log("I want to switch to Power Mode");
-        } else if (wishedFor == 2) {
-          console.log("I want to switch to Temperature mode");
-        } else if (wishedFor == 3) {
-          console.log("I want to switch to recipe mode");
-        }
-        if (contrMode.value.valueOf() == Mode.Man.valueOf()) {
+        if (contrMode.value.valueOf() === Mode.Man.valueOf()) {
           newContrProps.type = typeFromMode(Mode.Auto);
           storeApi.switchController(newContrProps, 0.0);
         } else {
