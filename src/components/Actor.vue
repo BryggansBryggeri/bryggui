@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { StoreApi } from "@/store/api";
+import { useActorsStore } from "@/stores/actor";
 import { match } from "@/models/result";
 import { ActorResult } from "@/models/actor";
 
@@ -38,9 +38,9 @@ export default defineComponent({
     id: { type: String, required: true },
   },
   setup(props) {
-    const storeApi = new StoreApi();
+    const store = useActorsStore();
     const dispActor = computed(() => {
-      const res = storeApi.getActorValue(props.id);
+      const res = store.actorResult(props.id);
       return dispActorFromApiRes(res);
     });
 

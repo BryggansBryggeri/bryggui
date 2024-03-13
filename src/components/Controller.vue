@@ -52,6 +52,7 @@
         <input
           v-model="parseTarget"
           type="text"
+          :disabled="!contrActive"
           :placeholder="parseTarget"
           class="input input-bordered input-primary w-full max-w-xs"
           @keydown.enter="setTarget(parseTarget, contrMode)"
@@ -64,7 +65,8 @@
 
 <script lang="ts">
 import { ref, computed, ComputedRef, defineComponent, PropType } from "vue";
-import { StoreApi } from "@/store/api";
+import { StoreApi } from "@/api";
+import { useContrStore } from "@/stores/controller";
 import type { ControllerProps, ContrStatus } from "@/models/controller";
 import { Mode, typeFromMode } from "@/models/controller";
 import { match } from "@/models/result";
@@ -108,14 +110,14 @@ export default defineComponent({
   },
   setup(props) {
     const storeApi = new StoreApi();
+    const store = useContrStore();
     const disabled = ref(false);
+
     const contrActive = computed(() =>
-      Array.from(storeApi.getActiveClients().controllers).includes(
-        props.contrProps.controllerId
-      )
+      store.isActive(props.contrProps.controllerId)
     );
     const target = computed(() => {
-      const raw = storeApi.getContrValue(props.contrProps.controllerId);
+      const raw = store.contrResult(props.contrProps.controllerId);
       if (raw !== undefined) {
         return match(
           raw,
@@ -128,7 +130,7 @@ export default defineComponent({
     });
 
     const contrMode: ComputedRef<Mode> = computed(() => {
-      const stat = storeApi.getContrValue(props.contrProps.controllerId);
+      const stat = store.contrResult(props.contrProps.controllerId);
       if (stat !== undefined) {
         return match(
           stat,
@@ -158,7 +160,7 @@ export default defineComponent({
       }
     }
 
-    function toggleMode(newMode: Mode.Man) {
+    function toggleMode(newMode: Mode) {
       if (!disabled.value) {
         disabled.value = true;
 
@@ -186,6 +188,7 @@ export default defineComponent({
     }
 
     const parseTarget = ref("");
+
     function setTarget(textInput: string, mode: Mode) {
       const newTarget = parseTargetString(textInput, mode);
       if (!Number.isNaN(newTarget)) {

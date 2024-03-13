@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ComputedRef } from "vue";
-import { StoreApi } from "@/store/api";
+import { useSensorsStore } from "@/stores/sensor";
 import { match } from "@/models/result";
 import { MeasResult } from "@/models/sensor";
 import { usePrecision } from "@vueuse/math";
@@ -39,9 +39,10 @@ export default defineComponent({
     id: { type: String, required: true },
   },
   setup(props) {
-    const storeApi = new StoreApi();
+    const store = useSensorsStore();
+
     const dispSensor = computed(() => {
-      const res = storeApi.getSensorValue(props.id);
+      const res = store.measResult(props.id);
       return dispSensorFromApiRes(res);
     });
     return { dispSensor, prettify };

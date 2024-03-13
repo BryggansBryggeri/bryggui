@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
-import { StoreApi } from "@/store/api";
+import { computed, defineComponent } from "vue";
+import { useNatsClientStore } from "@/stores/nats_client";
 import { ControllerProps } from "@/models/controller";
 import Controller from "@/components/Controller.vue";
 import ActiveClients from "@/components/ActiveClients.vue";
@@ -36,12 +36,10 @@ const boilController: ControllerProps = {
 export default defineComponent({
   components: { Controller, ActiveClients },
   setup() {
-    const storeApi = new StoreApi();
-    const loading = computed(() => storeApi.isLoading());
-    const natsClientStatus = computed(() => storeApi.getNatsClientStatus());
-    onMounted(() => {
-      storeApi.fauxLoading();
-    });
+    const store = useNatsClientStore();
+    const loading = computed(() => store.loading);
+    const natsClientStatus = computed(() => store.status);
+
     return { loading, mashController, boilController, natsClientStatus };
   },
 });

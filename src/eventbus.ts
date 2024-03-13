@@ -2,7 +2,6 @@ import { Msg, connect, StringCodec, JSONCodec, NatsConnection } from "nats.ws";
 import { SensorMsg, measResultFromMsg } from "@/models/sensor";
 import { ActiveClients } from "@/models/activeClients";
 import { ActorMsg, actorResultFromMsg } from "@/models/actor";
-import { NatsClientStatus } from "@/nats_setup";
 import {
   propsAndTargetToJson,
   ControllerProps,
@@ -11,7 +10,10 @@ import {
   contrResultFromMsg,
 } from "@/models/controller";
 import { natsSettings } from "@/nats_setup";
-import { StoreApi } from "@/store/api";
+import { useSensorsStore } from "@/stores/sensor";
+import { useActorsStore } from "@/stores/actor";
+import { useContrStore } from "@/stores/controller";
+import { useNatsClientStore } from "@/stores/nats_client";
 
 const sc = StringCodec();
 const jc = JSONCodec();
@@ -23,7 +25,6 @@ const TIMEOUT_MAX = 5000;
 
 export class Eventbus {
   private client: NatsConnection | null = null;
-  private storeApi = new StoreApi();
 
   public async start(): Promise<void> {
     // TODO add initialising logic that has to be awaited, e.g. list_active_clients.
@@ -34,16 +35,15 @@ export class Eventbus {
         pass: natsSettings.pass,
       });
       this.client = nc;
-      this.storeApi.updateNatsClientStatus(NatsClientStatus.Ready);
+      const natsStore = useNatsClientStore();
+      natsStore.setStatusReady();
 
       const sensorSub = this.client.subscribe("sensor.*.measurement");
       (async () => {
         for await (const msg of sensorSub) {
           const sensorMsg: SensorMsg = sensMsgDec.decode(msg.data);
-          this.storeApi.updateSensor(
-            sensorMsg.id,
-            measResultFromMsg(sensorMsg)
-          );
+          const store = useSensorsStore();
+          store.updateSensor(sensorMsg.id, measResultFromMsg(sensorMsg));
         }
       })().then();
 
@@ -51,10 +51,8 @@ export class Eventbus {
       (async () => {
         for await (const msg of actorSub) {
           const actorMsg: ActorMsg = actorMsgDec.decode(msg.data);
-          this.storeApi.updateActor(
-            actorMsg.signal.id,
-            actorResultFromMsg(actorMsg)
-          );
+          const store = useActorsStore();
+          store.updateActor(actorMsg.signal.id, actorResultFromMsg(actorMsg));
         }
       })().then();
 
@@ -63,11 +61,13 @@ export class Eventbus {
         for await (const msg of contrSub) {
           const contrMsg: ContrStatusMsg = contrMsgDec.decode(msg.data);
           const contrStatus = contrResultFromMsg(contrMsg);
-          this.storeApi.updateController(contrMsg.status.id, contrStatus);
+          const store = useContrStore();
+          store.updateContr(contrMsg.status.id, contrStatus);
         }
       })().then();
     } catch (err) {
-      this.storeApi.updateNatsClientStatus(NatsClientStatus.Error);
+      const natsStore = useNatsClientStore();
+      natsStore.setStatusError();
       console.log("Error connecting to NATS client", err);
     }
   }
@@ -171,6 +171,7 @@ export class Eventbus {
     if (data !== null) {
       return this.client?.request(subject, jc.encode(data), { timeout });
     }
+    console.log("Calling request with null data");
     return this.client?.request(subject, undefined, { timeout });
   }
 
