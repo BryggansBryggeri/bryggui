@@ -2,17 +2,17 @@
   <div class="place-self-center">
     <div class="btn-group">
       <button
-        :class="{ 'btn-active': isActive(mode, 'Manual', disabled) }"
+        :class="{ 'btn-active': isActive(mode, manMode, disabled) }"
         class="btn btn-outline btn-sm"
-        :disabled="props.disabled"
+        :disabled="disabled"
         @click="$emit('toggleEvent', 1)"
       >
         Manual
       </button>
       <button
-        :class="{ 'btn-active': isActive(mode, 'Auto', disabled) }"
+        :class="{ 'btn-active': isActive(mode, autoMode, disabled) }"
         class="btn btn-outline btn-sm"
-        :disabled="props.disabled"
+        :disabled="disabled"
         @click="$emit('toggleEvent', 2)"
       >
         Auto
@@ -22,26 +22,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 import { Mode } from "@/models/controller";
 
-// TODO: Figure out if this comp. can have Mode as a prop.
-function isActive(
-  currentMode: string,
-  cmp: string,
-  disabled: boolean
-): boolean {
+function isActive(currentMode: Mode, cmp: Mode, disabled: boolean): boolean {
   return currentMode === cmp && !disabled;
 }
 
 export default defineComponent({
   props: {
-    mode: { type: String as PropType<Mode>, required: true },
-    disabled: { type: Boolean, required: true },
+    mode: Mode,
+    disabled: Boolean,
   },
   emits: ["toggleEvent"],
   setup(props) {
-    return { props, isActive };
+    const manMode = Mode.Man;
+    const autoMode = Mode.Auto;
+    return { props, isActive, manMode, autoMode };
   },
 });
 </script>

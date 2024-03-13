@@ -1,5 +1,5 @@
 <template>
-  Status: {{ natsClientStatus }}
+  BryggIO server status: {{ natsClientStatus }}
   <div class="flex flex-col justify-between h-screen">
     <div v-if="loading">
       <h3 class="">Loading...</h3>

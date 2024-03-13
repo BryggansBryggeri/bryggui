@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col w-full rounded-lg px-4 py-5">
     <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
-      <div class="divider">Name</div>
+      <div class="divider">Controller</div>
       <div class="flex flex-row justify-between rounded-lg">
         <h3 class="capitalize font-bold">
           {{ prettify(props.contrProps.controllerId) }}
@@ -56,8 +56,7 @@
           class="input input-bordered input-primary w-full max-w-xs"
           @keydown.enter="setTarget(parseTarget, contrMode)"
         />
-        <!-- I can't seem to make the unit reactive-->
-        <!-- <h3>{{unit}}</h3> -->
+        <h3>{{ unit }}</h3>
       </div>
     </div>
   </div>
@@ -94,8 +93,10 @@ function contrUnit(mode: Mode): string {
 function parseTargetString(textInput: string, mode: Mode): number {
   const newTarget = parseFloat(textInput);
   if (mode === Mode.Man) {
+    // Directly set power target. Input is percentage in [0, 100], while the true target is the decimal in [0, 1]
     return newTarget / 100.0;
   } else {
+    // Set temp. target.
     return newTarget;
   }
 }
@@ -128,14 +129,14 @@ export default defineComponent({
 
     const contrMode: ComputedRef<Mode> = computed(() => {
       const stat = storeApi.getContrValue(props.contrProps.controllerId);
-      if (stat === undefined) {
-        return Mode.Man;
-      } else {
+      if (stat !== undefined) {
         return match(
           stat,
           (ok) => ok.mode,
           () => Mode.Man
         );
+      } else {
+        return Mode.Man;
       }
     });
 

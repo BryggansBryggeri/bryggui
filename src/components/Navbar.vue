@@ -10,9 +10,7 @@
     "
   >
     <div class="flex-1">
-      <p class="text-primary text-xl font-bold">
-        BryggIO<span class="text-primary-focus">/</span>UI
-      </p>
+      <p class="text-primary text-xl font-bold">BryggUI</p>
     </div>
     <div class="flex flex-none flex-row space-x-4">
       <!--We can do natsclientstatus, or a compound of several statuses here.
