@@ -5,7 +5,7 @@
         :class="{ 'btn-active': isActive(mode, manMode, disabled) }"
         class="btn btn-outline btn-sm"
         :disabled="disabled"
-        @click="$emit('toggleEvent', 1)"
+        @click="toggleEventH(manMode)"
       >
         Manual
       </button>
@@ -13,7 +13,7 @@
         :class="{ 'btn-active': isActive(mode, autoMode, disabled) }"
         class="btn btn-outline btn-sm"
         :disabled="disabled"
-        @click="$emit('toggleEvent', 2)"
+        @click="toggleEventH(autoMode)"
       >
         Auto
       </button>
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { Mode } from "@/models/controller";
 
 function isActive(currentMode: Mode, cmp: Mode, disabled: boolean): boolean {
@@ -31,14 +31,17 @@ function isActive(currentMode: Mode, cmp: Mode, disabled: boolean): boolean {
 
 export default defineComponent({
   props: {
-    mode: Mode,
+    mode: { type: String as PropType<Mode>, required: true },
     disabled: Boolean,
   },
   emits: ["toggleEvent"],
-  setup(props) {
+  setup(props, { emit }) {
+    const toggleEventH = (mode: Mode) => {
+      emit("toggleEvent", mode);
+    };
     const manMode = Mode.Man;
     const autoMode = Mode.Auto;
-    return { props, isActive, manMode, autoMode };
+    return { props, isActive, manMode, autoMode, toggleEventH };
   },
 });
 </script>

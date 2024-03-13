@@ -158,10 +158,9 @@ export default defineComponent({
       }
     }
 
-    function toggleMode(wishedFor: number) {
+    function toggleMode(newMode: Mode.Man) {
       if (!disabled.value) {
-        disabled.value = true; // TODO: Not sure if this destroys reactivity.
-        let newMode = wishedFor == 1 ? Mode.Man : Mode.Auto;
+        disabled.value = true;
 
         // If toggling to the current mode, do nothing.
         if (newMode === contrMode.value.valueOf()) {
