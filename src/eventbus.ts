@@ -14,6 +14,7 @@ import { useSensorsStore } from "@/stores/sensor";
 import { useActorsStore } from "@/stores/actor";
 import { useContrStore } from "@/stores/controller";
 import { useNatsClientStore } from "@/stores/nats_client";
+import { useLogsStore, LogEntry, LogLevel, parseLogLevel } from "@/stores/log";
 
 const sc = StringCodec();
 const jc = JSONCodec();
@@ -42,8 +43,8 @@ export class Eventbus {
       (async () => {
         for await (const msg of sensorSub) {
           const sensorMsg: SensorMsg = sensMsgDec.decode(msg.data);
-          const store = useSensorsStore();
-          store.updateSensor(sensorMsg.id, measResultFromMsg(sensorMsg));
+          const sensStore = useSensorsStore();
+          sensStore.updateSensor(sensorMsg.id, measResultFromMsg(sensorMsg));
         }
       })().then();
 
@@ -51,8 +52,11 @@ export class Eventbus {
       (async () => {
         for await (const msg of actorSub) {
           const actorMsg: ActorMsg = actorMsgDec.decode(msg.data);
-          const store = useActorsStore();
-          store.updateActor(actorMsg.signal.id, actorResultFromMsg(actorMsg));
+          const actorStore = useActorsStore();
+          actorStore.updateActor(
+            actorMsg.signal.id,
+            actorResultFromMsg(actorMsg)
+          );
         }
       })().then();
 
@@ -61,8 +65,17 @@ export class Eventbus {
         for await (const msg of contrSub) {
           const contrMsg: ContrStatusMsg = contrMsgDec.decode(msg.data);
           const contrStatus = contrResultFromMsg(contrMsg);
-          const store = useContrStore();
-          store.updateContr(contrMsg.status.id, contrStatus);
+          const contrStore = useContrStore();
+          contrStore.updateContr(contrMsg.status.id, contrStatus);
+        }
+      })().then();
+
+      const logSub = this.client.subscribe("log.>");
+      (async () => {
+        for await (const msg of logSub) {
+          const entry = this.entryFromMsg(msg);
+          const logStore = useLogsStore();
+          logStore.addLogEntry(entry);
         }
       })().then();
     } catch (err) {
@@ -70,6 +83,19 @@ export class Eventbus {
       natsStore.setStatusError();
       console.log("Error connecting to NATS client", err);
     }
+  }
+
+  private entryFromMsg(msg: Msg): LogEntry {
+    const subj = msg.subject.split(".", 3);
+    let level = parseLogLevel(subj[1]);
+    if (level === undefined) {
+      console.log(`Failed parsing ${subj[1]} as LogLevel`);
+      level = LogLevel.Error;
+    } else {
+      level = level as LogLevel;
+    }
+    const clientId = subj[2];
+    return { level: level, clientId: clientId, msg: `${sc.decode(msg.data)}` };
   }
 
   public async listActiveClients(): Promise<ActiveClients | undefined> {
@@ -98,14 +124,7 @@ export class Eventbus {
   ): Promise<void> {
     const contrData = propsAndTargetToJson(props, target);
     try {
-      const reply = await this.request(
-        "command.start_controller",
-        contrData,
-        TIMEOUT_MAX
-      );
-      if (reply) {
-        console.log(sc.decode(reply.data));
-      }
+      await this.request("command.start_controller", contrData, TIMEOUT_MAX);
     } catch (err) {
       console.log("Error starting controller: ", err);
     }
@@ -114,14 +133,7 @@ export class Eventbus {
   public async stopController(props: ControllerProps): Promise<void> {
     const id = JSON.parse(`"${props.controllerId}"`);
     try {
-      const reply = await this.request(
-        "command.stop_controller",
-        id,
-        TIMEOUT_MAX
-      );
-      if (reply) {
-        console.log(sc.decode(reply.data));
-      }
+      await this.request("command.stop_controller", id, TIMEOUT_MAX);
     } catch (err) {
       console.log("Error stopping controller: ", err);
     }
@@ -133,14 +145,7 @@ export class Eventbus {
   ): Promise<void> {
     const contrData = propsAndTargetToJson(props, newTarget);
     try {
-      const reply = await this.request(
-        "command.switch_controller",
-        contrData,
-        TIMEOUT_MAX
-      );
-      if (reply) {
-        console.log(sc.decode(reply.data));
-      }
+      await this.request("command.switch_controller", contrData, TIMEOUT_MAX);
     } catch (err) {
       console.log("Error switching controllers: ", err);
     }
@@ -150,14 +155,11 @@ export class Eventbus {
     // TODO: stupid serialization.
     const parsedTarget = JSON.parse(`${newTarget}`);
     try {
-      const reply = await this.request(
+      await this.request(
         `controller.${contrId}.set_target`,
         parsedTarget,
         TIMEOUT_MAX
       );
-      if (reply) {
-        console.log(sc.decode(reply.data));
-      }
     } catch (err) {
       console.log("Failed setting target", err);
     }

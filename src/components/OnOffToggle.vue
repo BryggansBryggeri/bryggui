@@ -4,14 +4,7 @@
     <button
       :disabled="props.disabled"
       :checked="props.state"
-      class="
-        toggle
-        bg-red-300
-        border-red-300
-        checked:bg-success
-        indeterminate:bg-warning
-        checked:border-success
-      "
+      class="toggle bg-red-300 border-red-300 checked:bg-success indeterminate:bg-warning checked:border-success"
     />
     <!-- For some reason ALL OnOffToggle now sets to disabled and indet when clicked. Can't figure it out right now. -->
   </div>

@@ -1,13 +1,6 @@
 <template>
   <div
-    class="
-      bg-neutral
-      text-neutral-content
-      flex flex-row
-      justify-between
-      p-6
-      mb-5
-    "
+    class="bg-neutral text-neutral-content flex flex-row justify-between p-6 mb-5"
   >
     <div class="flex-1">
       <p class="text-primary text-xl font-bold">BryggUI</p>
@@ -17,16 +10,7 @@
       Change icon depending on system status etc--->
       <div
         id="connection status"
-        class="
-          flex flex-row
-          gap-2
-          bg-neutral-focus
-          px-2
-          rounded-full
-          items-center
-          text-sm
-          shadow-inner
-        "
+        class="flex flex-row gap-2 bg-neutral-focus px-2 rounded-full items-center text-sm shadow-inner"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -53,14 +37,7 @@
 
       <div
         id="Theme Switcher"
-        class="
-          flex flex-row
-          bg-neutral-focus
-          p-2
-          rounded-full
-          items-center
-          shadow-inner
-        "
+        class="flex flex-row bg-neutral-focus p-2 rounded-full items-center shadow-inner"
       >
         <button
           class="transition transition-all"
@@ -70,12 +47,7 @@
         >
           <svg
             :class="{ hidden: !isDark }"
-            class="
-              transition transition-all
-              w-6
-              h-6
-              hover:scale-125 hover:text-primary
-            "
+            class="transition transition-all w-6 h-6 hover:scale-125 hover:text-primary"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -90,12 +62,7 @@
           </svg>
           <svg
             :class="{ hidden: isDark }"
-            class="
-              transition transition-all
-              w-6
-              h-6
-              hover:scale-125 hover:text-primary
-            "
+            class="transition transition-all w-6 h-6 hover:scale-125 hover:text-primary"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

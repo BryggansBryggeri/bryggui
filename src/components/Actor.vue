@@ -1,15 +1,6 @@
 <template>
   <div
-    class="
-      flex
-      bg-base-300
-      px-3
-      py-2
-      rounded-lg
-      flex-col flex-none
-      text-sm
-      w-1/3
-    "
+    class="flex bg-base-300 px-3 py-2 rounded-lg flex-col flex-none text-sm w-1/3"
   >
     <div class="capitalize">
       {{ prettify(id) }}

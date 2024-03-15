@@ -8,6 +8,7 @@
       <controller :contr-props="mashController" />
       <controller :contr-props="boilController" />
       <active-clients />
+      <log />
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ import { useNatsClientStore } from "@/stores/nats_client";
 import { ControllerProps } from "@/models/controller";
 import Controller from "@/components/Controller.vue";
 import ActiveClients from "@/components/ActiveClients.vue";
+import Log from "@/components/Log.vue";
 
 const mashController: ControllerProps = {
   controllerId: "mash_controller",
@@ -34,7 +36,7 @@ const boilController: ControllerProps = {
 };
 
 export default defineComponent({
-  components: { Controller, ActiveClients },
+  components: { Controller, ActiveClients, Log },
   setup() {
     const store = useNatsClientStore();
     const loading = computed(() => store.loading);
