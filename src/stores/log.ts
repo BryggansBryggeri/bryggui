@@ -26,10 +26,10 @@ export interface LogEntry {
 }
 
 export enum LogLevel {
-  Debug = "debug",
-  Info = "info",
-  Warning = "warning",
-  Error = "error",
+  Debug = "Debug",
+  Info = "Info",
+  Warning = "Warning",
+  Error = "Error",
 }
 
 export function parseLogLevel(level: string): LogLevel | undefined {

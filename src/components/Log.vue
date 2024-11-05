@@ -30,6 +30,8 @@ function formatStringForHtml(inputString: string): string {
 
 function getLevelStyle(level: LogLevel): Record<string, string> {
   switch (level) {
+    case LogLevel.Debug:
+      return {}; // Green for READY
     case LogLevel.Info:
       return { color: "green" }; // Green for READY
     case LogLevel.Warning:
@@ -37,6 +39,7 @@ function getLevelStyle(level: LogLevel): Record<string, string> {
     case LogLevel.Error:
       return { color: "red" }; // Red for ERROR
     default:
+      console.error("Unreachable: Invalid log level type", level);
       return {};
   }
 }
