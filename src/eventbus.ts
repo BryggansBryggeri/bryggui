@@ -55,7 +55,7 @@ export class Eventbus {
           const actorStore = useActorsStore();
           actorStore.updateActor(
             actorMsg.signal.id,
-            actorResultFromMsg(actorMsg)
+            actorResultFromMsg(actorMsg),
           );
         }
       })().then();
@@ -120,7 +120,7 @@ export class Eventbus {
 
   public async startController(
     props: ControllerProps,
-    target: number
+    target: number,
   ): Promise<void> {
     const contrData = propsAndTargetToJson(props, target);
     try {
@@ -141,7 +141,7 @@ export class Eventbus {
 
   public async switchController(
     props: ControllerProps,
-    newTarget: number
+    newTarget: number,
   ): Promise<void> {
     const contrData = propsAndTargetToJson(props, newTarget);
     try {
@@ -158,7 +158,7 @@ export class Eventbus {
       await this.request(
         `controller.${contrId}.set_target`,
         parsedTarget,
-        TIMEOUT_MAX
+        TIMEOUT_MAX,
       );
     } catch (err) {
       console.log("Failed setting target", err);
@@ -168,7 +168,7 @@ export class Eventbus {
   public async request(
     subject: string,
     data: JSON | null,
-    timeout: number
+    timeout: number,
   ): Promise<Msg | undefined> {
     if (data !== null) {
       return this.client?.request(subject, jc.encode(data), { timeout });

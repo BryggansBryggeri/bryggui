@@ -99,7 +99,7 @@ export default defineComponent({
     const disabled = ref(false);
 
     const contrActive = computed(() =>
-      store.isActive(props.contrProps.controllerId)
+      store.isActive(props.contrProps.controllerId),
     );
     const target = computed(() => {
       const raw = store.contrResult(props.contrProps.controllerId);
@@ -107,7 +107,7 @@ export default defineComponent({
         return match(
           raw,
           (ok) => dispContr(ok),
-          (err) => `${err}`
+          (err) => `${err}`,
         );
       } else {
         return "Inactive";
@@ -120,7 +120,7 @@ export default defineComponent({
         return match(
           stat,
           (ok) => ok.mode,
-          () => Mode.Man
+          () => Mode.Man,
         );
       } else {
         return Mode.Man;
@@ -157,7 +157,7 @@ export default defineComponent({
 
         let newContrProps: ControllerProps = Object.assign(
           {},
-          props.contrProps
+          props.contrProps,
         );
         if (contrMode.value.valueOf() === Mode.Man.valueOf()) {
           newContrProps.type = typeFromMode(Mode.Auto);

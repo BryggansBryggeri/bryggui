@@ -1,5 +1,4 @@
 <template>
-  BryggIO server status: {{ natsClientStatus }}
   <div class="flex flex-col justify-between h-screen">
     <div v-if="loading">
       <h3 class="">Loading...</h3>
@@ -20,6 +19,7 @@ import { ControllerProps } from "@/models/controller";
 import Controller from "@/components/Controller.vue";
 import ActiveClients from "@/components/ActiveClients.vue";
 import Log from "@/components/Log.vue";
+import { NatsClientStatus } from "@/nats_setup";
 
 const mashController: ControllerProps = {
   controllerId: "mash_controller",
@@ -39,10 +39,9 @@ export default defineComponent({
   components: { Controller, ActiveClients, Log },
   setup() {
     const store = useNatsClientStore();
-    const loading = computed(() => store.loading);
-    const natsClientStatus = computed(() => store.status);
+    const loading = computed(() => store.status !== NatsClientStatus.Ready);
 
-    return { loading, mashController, boilController, natsClientStatus };
+    return { loading, mashController, boilController };
   },
 });
 </script>

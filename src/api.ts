@@ -5,7 +5,7 @@ import { ControllerProps, Target } from "@/models/controller";
 export class StoreApi {
   public async startController(
     props: ControllerProps,
-    target: number
+    target: number,
   ): Promise<void> {
     await eventbus.startController(props, target);
   }
@@ -18,7 +18,7 @@ export class StoreApi {
 
   public async switchController(
     props: ControllerProps,
-    newTarget: Target
+    newTarget: Target,
   ): Promise<void> {
     await eventbus.switchController(props, newTarget);
   }

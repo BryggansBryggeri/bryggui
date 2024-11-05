@@ -5,7 +5,7 @@ export type Result<O, E> = Ok<O> | Err<E>;
 export function match<T, O, E>(
   input: Result<O, E>,
   ok: (ok: O) => T,
-  err: (err: E) => T
+  err: (err: E) => T,
 ): T {
   switch (input.tag) {
     case "Ok":

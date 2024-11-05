@@ -56,7 +56,7 @@ function dispSensorFromApiRes(res: MeasResult | undefined): DispSensor {
       },
       (err): DispSensor => {
         return { isErr: true, val: 0, err: `${err}` };
-      }
+      },
     );
   } else {
     return { isErr: true, val: 0, err: "Inactive" } as DispSensor;

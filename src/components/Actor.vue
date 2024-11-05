@@ -54,7 +54,7 @@ function dispActorFromApiRes(res: ActorResult | undefined): DispActor {
       },
       (err): DispActor => {
         return { isErr: true, val: "", err: `${err}` };
-      }
+      },
     );
   } else {
     return { isErr: true, val: "", err: "Inactive" } as DispActor;

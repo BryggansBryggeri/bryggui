@@ -1,18 +1,22 @@
 <template>
-  <div class="flex flex-col w-full">
-    <h2>Active clients:</h2>
-    <h3>Controllers</h3>
-    <li v-for="contr in controllers" :key="contr">
-      {{ contr }}
-    </li>
-    <h3>Sensors</h3>
-    <li v-for="sensor in sensors" :key="sensor">
-      {{ sensor }}
-    </li>
-    <h3>Actors</h3>
-    <li v-for="actor in actors" :key="actor">
-      {{ actor }}
-    </li>
+  <div class="flex flex-col w-full rounded-lg px-4 py-5">
+    <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
+      <div class="divider">Clients</div>
+      <div class="flex flex-col w-full">
+        <h3 class="capitalize font-bold">Controllers</h3>
+        <li v-for="contr in controllers" :key="contr">
+          {{ contr }}
+        </li>
+        <h3 class="capitalize font-bold">Sensors</h3>
+        <li v-for="sensor in sensors" :key="sensor">
+          {{ sensor }}
+        </li>
+        <h3 class="capitalize font-bold">Actors</h3>
+        <li v-for="actor in actors" :key="actor">
+          {{ actor }}
+        </li>
+      </div>
+    </div>
   </div>
 </template>
 

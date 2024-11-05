@@ -32,7 +32,7 @@
           <path class="" d="M8.53 16.11a6 6 0 0 1 6.95 0" />
           <line class="" x1="12" y1="20" x2="12.01" y2="20" />
         </svg>
-        <p>Connection status is: {{ "good" }}</p>
+        <p>BryggIO server status: {{ natsClientStatus }}</p>
       </div>
 
       <div
@@ -82,19 +82,22 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from "vue";
+import { computed, onMounted, defineComponent } from "vue";
 import { themeChange } from "theme-change";
 import { useToggle, useDark } from "@vueuse/core";
+import { useNatsClientStore } from "@/stores/nats_client";
 
 export default defineComponent({
   setup() {
     const isDark = useDark();
     const toggleDark = useToggle(isDark);
     const [modeSwitcher, toggle] = useToggle();
+    const store = useNatsClientStore();
+    const natsClientStatus = computed(() => store.status);
     onMounted(() => {
       themeChange(false);
     });
-    return { modeSwitcher, toggle, isDark, toggleDark };
+    return { modeSwitcher, toggle, isDark, toggleDark, natsClientStatus };
   },
 });
 </script>

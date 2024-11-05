@@ -16,7 +16,7 @@ export type ControllerProps = {
 // Manual serialization, stupid but don't know how to do it otherwise
 export function propsAndTargetToJson(
   props: ControllerProps,
-  newTarget: Target
+  newTarget: Target,
 ): JSON {
   const config = {
     controller_id: props.controllerId,

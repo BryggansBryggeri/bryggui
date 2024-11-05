@@ -1,7 +1,7 @@
 export const natsSettings = {
   servers: "ws://localhost:9222",
+  // servers: "ws://192.168.51.56:9222", // Eneryield network.
   // servers: "ws://192.168.1.2:9222",
-  //servers: "ws://70.34.222.146:9222",
   user: "jackonelli",
   pass: "penna1glas",
 };
