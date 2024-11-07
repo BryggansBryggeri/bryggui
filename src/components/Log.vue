@@ -3,7 +3,7 @@
     <div class="flex flex-col rounded-lg bg-base-200 p-4 space-y-4">
       <div class="divider">Log</div>
       <div class="flex flex-col w-full">
-        <li v-for="entry in entries" :key="entry">
+        <li v-for="entry in entries">
           <div :style="getLevelStyle(entry.level)">{{ entry.level }}:</div>
           <span
             v-html="formatStringForHtml(entry.msg)"

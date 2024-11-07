@@ -5,7 +5,10 @@ export function capitalizeFirstLetter(string: string): string {
 } // @Jakob: Totally unneccesery from a UI-perspective as it's easy to do this in CSS.
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function hasKey<O>(obj: O, key: keyof any): key is keyof O {
+export function hasKey<O extends object>(
+  obj: O,
+  key: keyof any,
+): key is keyof O {
   return key in obj;
 }
 
