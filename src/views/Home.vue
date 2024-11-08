@@ -12,8 +12,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import { useNatsClientStore } from "@/stores/nats_client";
 import { ControllerProps } from "@/models/controller";
 import Controller from "@/components/Controller.vue";
@@ -35,13 +35,7 @@ const boilController: ControllerProps = {
   type: "manual",
 };
 
-export default defineComponent({
-  components: { Controller, ActiveClients, Log },
-  setup() {
-    const store = useNatsClientStore();
-    const loading = computed(() => store.status !== NatsClientStatus.Ready);
-
-    return { loading, mashController, boilController };
-  },
-});
+const store = useNatsClientStore();
+// const loading = computed(() => store.status !== NatsClientStatus.Ready);
+const loading = false; // This is for development purposes if there is no BryggIO client available
 </script>
