@@ -23,7 +23,11 @@ onMounted(() => {
     class="bg-neutral text-neutral-content flex flex-row justify-between p-6 mb-5"
   >
     <div class="flex-1">
-      <p class="text-primary text-xl font-bold">BryggUI</p>
+      <img
+        :src="isDark ? '/src/assets/bryggio-white.svg' : '/src/assets/bryggio-dark.svg'"
+        alt="BryggIO Logo"
+        class="h-10 w-auto"
+      />
     </div>
     <div class="flex flex-none flex-row space-x-4">
       <div
@@ -98,3 +102,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+svg {
+  @apply transition-colors duration-200;
+}
+</style>
