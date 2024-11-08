@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import { computed, onMounted } from "vue";
+import { themeChange } from "theme-change";
+import { useToggle, useDark } from "@vueuse/core";
+import { useNatsClientStore } from "@/stores/nats_client";
+
+// Theme handling
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
+// NATS status
+const store = useNatsClientStore();
+const natsClientStatus = computed(() => store.status);
+
+// Theme initialization on mount
+onMounted(() => {
+  themeChange(false);
+});
+</script>
+
 <template>
   <div
     class="bg-neutral text-neutral-content flex flex-row justify-between p-6 mb-5"
@@ -6,8 +26,6 @@
       <p class="text-primary text-xl font-bold">BryggUI</p>
     </div>
     <div class="flex flex-none flex-row space-x-4">
-      <!--We can do natsclientstatus, or a compound of several statuses here.
-      Change icon depending on system status etc--->
       <div
         id="connection status"
         class="flex flex-row gap-2 bg-neutral-focus px-2 rounded-full items-center text-sm shadow-inner"
@@ -80,24 +98,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, onMounted, defineComponent } from "vue";
-import { themeChange } from "theme-change";
-import { useToggle, useDark } from "@vueuse/core";
-import { useNatsClientStore } from "@/stores/nats_client";
-
-export default defineComponent({
-  setup() {
-    const isDark = useDark();
-    const toggleDark = useToggle(isDark);
-    const [modeSwitcher, toggle] = useToggle();
-    const store = useNatsClientStore();
-    const natsClientStatus = computed(() => store.status);
-    onMounted(() => {
-      themeChange(false);
-    });
-    return { modeSwitcher, toggle, isDark, toggleDark, natsClientStatus };
-  },
-});
-</script>
