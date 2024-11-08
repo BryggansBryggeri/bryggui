@@ -39,7 +39,8 @@ export default defineComponent({
   components: { Controller, ActiveClients, Log },
   setup() {
     const store = useNatsClientStore();
-    const loading = computed(() => store.status !== NatsClientStatus.Ready);
+    // const loading = computed(() => store.status !== NatsClientStatus.Ready);
+    const loading = false; // This is for development purposes if there is no BryggIO client available
 
     return { loading, mashController, boilController };
   },
