@@ -24,9 +24,10 @@ onMounted(() => {
   >
     <div class="flex-1">
       <img
-        :src="isDark ? '/src/assets/bryggio-white.svg' : '/src/assets/bryggio-dark.svg'"
+        src="/src/assets/bryggio-white.svg"
         alt="BryggIO Logo"
         class="h-10 w-auto"
+        :class="isDark ? 'invert-0' : 'invert'"
       />
     </div>
     <div class="flex flex-none flex-row space-x-4">
@@ -103,8 +104,3 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
-svg {
-  @apply transition-colors duration-200;
-}
-</style>
